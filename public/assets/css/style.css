@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap');
 
 /* border-box layout for all elements */
@@ -25,38 +24,21 @@ body {
     font-size: 16px;
     font-weight: 300;
 
-    background: #536976;
+    background: #F7F8F8;
     /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #292E49, #536976);
+    background: -webkit-linear-gradient(to right, #ACBB78, #F7F8F8);
     /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #292E49, #536976);
+    background: linear-gradient(to right, #ACBB78, #F7F8F8);
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
-    background: #F7F8F8;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to right, #ACBB78, #F7F8F8);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to right, #ACBB78, #F7F8F8); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: #F7F8F8;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #ACBB78, #F7F8F8);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #ACBB78, #F7F8F8);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
 
-}
-
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-
-    /* Webkit based browsers have a grey background
-      in radio buttons. To get rid of them, -webkit-appearance: none is
-      needed. That makes them invisible in some browsers.
-      So there is a lot of styling needed to make them look right: */
-    input[type=radio] {
-        -webkit-appearance: none;
-        height: 1em;
-        width: 1em;
-        border: 1px solid #000000;
-        cursor: pointer;
-        border-radius: 2em;
-    }
-
-    input[type=radio]:checked {
-        background-color: #000000;
-    }
 }
 
 input[type=text],
@@ -195,10 +177,11 @@ button {
 }
 
 
-*:focus,*:active {
-    border-color: none!important;
+*:focus,
+*:active {
+    border-color: none !important;
     box-shadow: none !important;
-    outline: none!important;
+    outline: none !important;
 }
 
 #title-center {
@@ -206,18 +189,20 @@ button {
     margin: auto;
 }
 
-#description{
+#description {
     font-style: italic;
     font-weight: 500;
 }
+
 .S:hover {
     background-color: rgb(247, 192, 219);
     z-index: 2;
     transform: scale(1.2);
     transition: .3s;
     font-weight: bold;
- }
- .S {
+}
+
+.S {
     position: absolute;
     visibility: visible;
     top: -500px;
@@ -227,115 +212,133 @@ button {
     padding: 5px;
     /* padding-left: 8px; */
     /* padding-right: 8px; */
-    transition: background 0.2s ;
+    transition: background 0.2s;
     background: #d2691e7d;
     font-size: smaller;
     transition: .1s;
     border-radius: 3px;
-    border:solid 1px #62595966;
+    border: solid 1px #62595966;
     z-index: 1;
 }
 
 
- #s0 {
+#s0 {
     font-size: large;
     background: #f75353;
     font-weight: bold;
     z-index: 2;
- }
+}
 
- #search_template {
+#search_template {
     display: block;
     right: 10px;
     position: absolute;
- }
+}
 
- #side-info {
+#side-info {
     max-height: 80vh;
     overflow: overlay;
     background: #00000024;
     border-radius: 15px;
- }
+}
 
 
-  *::-webkit-scrollbar {
+*::-webkit-scrollbar {
     display: none;
-  }
+}
 
-  #topic-img{
+#topic-img {
     width: 100%;
     max-width: 225px;
     min-width: 150px;
     padding: 14px;
     height: auto;
-  }
+}
 
-  a.dfn-hover {
-	color: #333;
-	text-decoration: none;
+a.dfn-hover {
+    color: #333;
+    text-decoration: none;
 }
 
 /** Code for hover info **/
 
 dfn {
-  /* background: #e9e9e9; */
-  /* border-bottom: dashed 1px rgba(0,0,0,0.8); */
-  /* padding: 0 0.4em; */
-  padding: 10px;
-  /* padding-left:8px ; */
-  /* padding-right:8px ; */
-  cursor: help;
-  font-style: normal;
-  position: relative;
-  z-index: 1000
-  
+    /* background: #e9e9e9; */
+    /* border-bottom: dashed 1px rgba(0,0,0,0.8); */
+    /* padding: 0 0.4em; */
+    padding: 10px;
+    /* padding-left:8px ; */
+    /* padding-right:8px ; */
+    cursor: help;
+    font-style: normal;
+    position: relative;
+    z-index: 1000
 }
+
 dfn::after {
-  content: attr(data-info);
-  display: inline;
-  position: absolute;
-  top: 22px; left: 0;
-  opacity: 0;
-  width: 230px;
-  font-size: 13px;
-  font-weight: 700;
-  line-height: 1.5em;
-  padding: 0.5em 0.8em;
-  background: rgba(0,0,0,0.8);
-  color: #fff;
-  pointer-events: none; /* This prevents the box from apearing when hovered. */
-  transition: opacity 250ms, top 250ms;
+    content: attr(data-info);
+    display: inline;
+    position: absolute;
+    top: 22px;
+    left: 0;
+    opacity: 0;
+    width: 230px;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.5em;
+    padding: 0.5em 0.8em;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    pointer-events: none;
+    /* This prevents the box from apearing when hovered. */
+    transition: opacity 250ms, top 250ms;
 }
+
 dfn::before {
-  content: '';
-  display: block;
-  position: absolute;
-  top: 12px; left: 20px;
-  opacity: 0;
-  width: 0; height: 0;
-  border: solid transparent 5px;
-  border-bottom-color: rgba(0,0,0,0.8);
-  transition: opacity 250ms, top 250ms;
+    content: '';
+    display: block;
+    position: absolute;
+    top: 12px;
+    left: 20px;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    border: solid transparent 5px;
+    border-bottom-color: rgba(0, 0, 0, 0.8);
+    transition: opacity 250ms, top 250ms;
 }
+
 dfn:hover {
     z-index: 1000;
-} /* Keeps the info boxes on top of other elements */
+}
+
+/* Keeps the info boxes on top of other elements */
 dfn:hover::after,
-dfn:hover::before {opacity: 1;}
-dfn:hover::after {top: 30px;}
-dfn:hover::before {top: 20px;}
+dfn:hover::before {
+    opacity: 1;
+}
+
+dfn:hover::after {
+    top: 30px;
+}
+
+dfn:hover::before {
+    top: 20px;
+}
 
 /* socials */
-.socials{
+.socials {
     display: flex;
 }
-.social-icons{
+
+.social-icons {
     position: fixed;
     bottom: 0;
     right: 15px;
     z-index: 10000;
 }
-.social-icons img{
+
+.social-icons img {
     width: 20px;
     margin: 5px 5px;
 }
