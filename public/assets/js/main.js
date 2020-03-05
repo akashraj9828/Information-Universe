@@ -167,7 +167,7 @@ Aid = dist;
 // update_graph()
 
 function test() {
-    setTimeout(() => {
+    setInterval(() => {
         get_data("",random=1);
     
     }, 5000);

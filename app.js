@@ -8,6 +8,10 @@ var bodyParser = require('body-parser')
 const https = require('https');
 const request = require('request')
 
+const default_img="https://i.ibb.co/7jZZX53/no-img.png"
+
+var url="https://akashraj.tech/api/webhook_info_uni.php"
+var webhook_url=get_webhook(url)
 function listen() {
     var host = server.address().address;
     var port = server.address().port;
@@ -88,7 +92,7 @@ function query_wiki(title, callback) {
         res.title = data.title
         res.description = data.description
         res.extract = data.extract
-        res.image = check_key(data, "thumbnail") ? data.thumbnail.source : undefined
+        res.image = check_key(data, "thumbnail") ? data.thumbnail.source : default_img
         related[data.displaytitle] = pack(data, -1)
 
         // get related pages
@@ -117,7 +121,7 @@ function pack(data, count) {
     temp_obj.title = check_key(elm, "displaytitle") ? elm.displaytitle : undefined
     temp_obj.description = check_key(elm, "description") ? elm.description : undefined
     temp_obj.extract = check_key(elm, "extract") ? elm.extract : undefined
-    temp_obj.link = check_key(elm, "content_urls") ? elm.content_urls.desktop.page : undefined
+    temp_obj.link = check_key(elm, "content_urls") ? elm.content_urls.desktop.page : default_img
     temp_obj.image = check_key(elm, "thumbnail") ? elm.thumbnail.source : undefined
     temp_obj.count = count
 
@@ -186,7 +190,7 @@ function build_msg(data) {
         },
         "accessory": {
             "type": "image",
-            "image_url": `${data.image?data.image:"https://i.ibb.co/7jZZX53/no-img.png"}`,
+            "image_url": `${data.image?data.image:default_img}`,
             "alt_text": `${data.title+""}`
         },
 
@@ -201,7 +205,7 @@ function build_msg(data) {
         // console.log(JSON.stringify(msg));
         // console.log("--------------");
 
-        request.post('https://hooks.slack.com/services/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', {
+        request.post(webhook_url, {
             json: JSON.parse(JSON.stringify(msg)),
         }, (error, res, body) => {
             if (error) {
@@ -216,4 +220,20 @@ function build_msg(data) {
 
 
 
+}
+
+function get_webhook(url) {
+    request.get(url, {
+        
+    }, (error, res, body) => {
+        if (error) {
+            console.error(error)
+            return
+        }
+        webhook_url=body
+        // console.log(`statusCode: ${res.statusCode}`)
+        // console.log(body)
+        // msg["blocks"] = []
+    })
+    
 }
