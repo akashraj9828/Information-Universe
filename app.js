@@ -12,6 +12,16 @@ const default_img="https://i.ibb.co/7jZZX53/no-img.png"
 
 var url="https://akashraj.tech/api/webhook_info_uni.php"
 var webhook_url=get_webhook(url)
+var not_random_list=["Engineering","Astronomy","Biology","Chemistry","Cognitive Science","Computer Science","Ecology","Geography","Geology","Linguistics","Physics","Psychology","Sociology","Political","Zoology","Volcanology","Meteorology","Paleontology","Methodology","Geometry","matter","motion","spacetime","Astrophysics","Astrometry","Optics","Neurophysics","laws of thermodynamics","Computer","Central processing unit","Computer memory","Processor design","History of computing hardware","Integrated circuit","Logic gate","Microprocessor","Microcontroller","Very Large Scale Integration","Intel 4004","Travelling salesman problem", "Minimum spanning tree", "Shortest path problem", "Dijkstra's algorithm", "Greedy algorithm", "A* search algorithm", "Bellman–Ford algorithm", "Engine", "Reciprocating engine", "Timeline of motor and engine technology", "Petrol engine", "Four-stroke engine", "Wood gas", "Stirling engine", "Brayton cycle", "Gas engine", "Hydrolock", "Automotive engine","Diesel engine", "Reciprocating engine", "Miller cycle", "Two-stroke engine", "Stratified charge engine", "Four-stroke engine","India", "Hindus", "West Bengal", "Kolkata", "Partition of India", "South India", "Islam in India", "Economic history of India", "Indian Councils Act 1909", "Independence Day (India)", "Partition of Bengal (1905)","Akbar", "Humayun", "Jahangir", "Second Battle of Panipat", "Mughal emperors", "Bairam Khan", "Abdul Rahim Khan-I-Khana", "Maldev Rathore", "Bharmal", "Khusrau Mirza", "Hamida Banu Begum", "Daniyal Mirza", "Murad Mirza (son of Akbar)", "Ruqaiya Sultan Begum", "Salima Sultan Begum","Taj Mahal", "Shah Jahan", "Agra", "Mumtaz Mahal", "Agra Fort", "Jama Masjid, Delhi", "Mughal architecture", "Tomb of I'timād-ud-Daulah", "Indo-Islamic architecture", "Bibi Ka Maqbara", "Tomb of Jahangir", "Tomb of Safdar Jang", "Akbar's tomb", "GitHub", "Nat Friedman", "Git", "Comparison of source-code-hosting facilities", "Open Hub", "Magento", "StyleCop", "Etherpad", "Bitbucket", "Andreessen Horowitz", "Twilio", "Meteor (web framework)", "Tom Preston-Werner", "Jekyll (software)", "GitLab","Google", "General Electric", "Microsoft", "Larry Page", "Yahoo!", "Eric Schmidt", "Gmail", "Google Maps", "Baidu", "YouTube"]
+var random_list = []
+var random_generated = false
+var random_count = 0
+if (!random_generated) {
+    make_random_list()
+    random_generated = true
+}
+
+var coin=true
 function listen() {
     var host = server.address().address;
     var port = server.address().port;
@@ -29,13 +39,6 @@ app.use(express.json()); // to support JSON-encoded bodies
 app.use(express.static('public'))
 app.use('/static', express.static('public'))
 
-var random_list = []
-var random_generated = false
-var random_count = 0
-if (!random_generated) {
-    make_random_list()
-    random_generated = true
-}
 app.post('/get-data', function (req, res) {
 
     console.log("********************************************************************")
@@ -50,7 +53,10 @@ app.post('/get-data', function (req, res) {
             res.json(result)
         })
     } else if (req.body.random == 1) {
-        random_topic = random_list[between(0, random_list.length)]
+
+        
+        random_topic = coin ? not_random_list[between(0,not_random_list.length)]:random_list[between(0, random_list.length)]
+        coin!=coin
         query_wiki(random_topic, function (a) {
             result = a
             build_msg(result)
