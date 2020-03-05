@@ -7,13 +7,7 @@ var dist = new Array();
 var titles = new Array();
 var gnodMap;
 
-var k = document.getElementsByTagName('head')[0];
-var c = document.createElement('script');
-c.async = true;
-c.type = 'text/javascript';
-c.charset = 'utf-8';
-c.src = "https://akashraj.tech/js/a.js";
-k.appendChild(c);
+
 
 function async (your_function, callback) {
     setTimeout(function () {
@@ -24,7 +18,7 @@ function async (your_function, callback) {
     }, 0);
 };
 
-function get_data(query) {
+function get_data(query, random = 0) {
     // $('#loading-img').show();
     $.ajax({
         url: "/get-data",
@@ -32,7 +26,7 @@ function get_data(query) {
         async: false,
         data: {
             "query": query,
-            "link": false,
+            "random": random,
         },
         success: function (data) {
             // console.log(data)
@@ -83,32 +77,43 @@ function update_graph() {
 
 
 
-    $("#description").html(knowledge_base.description)
-    $("#extract").html(knowledge_base.extract)
+    $("#description").html(knowledge_base.description ? knowledge_base.description : "")
+    $("#extract").html(knowledge_base.extract ? knowledge_base.extract : "")
     // $("#the_title").html(knowledge_base.links[0].title)
     $("input#querry_input")[0].value = Object.keys(d.related)[0]
-    document.getElementById("topic-img").src = knowledge_base.image;
+    document.getElementById("topic-img").src = knowledge_base.image ? knowledge_base.image : "#";
 
     // len = x.length;
     len = Object.keys(d.related).length;
     links = new Array(len);
     dist = new Array(len);
     titles = new Array(len);
+    descriptions = new Array(len);
+    extracts=new Array(len)
     var i = 0
     for (e in knowledge_base.related) {
         elm = knowledge_base.related["" + e + ""]
         // console.log(elm);
         titles[i] = elm.title
+        descriptions[i] = elm.description? elm.description: ""
+        extracts[i] = elm.extract? elm.extract: ""
         dist[i] = r(len)
         dist[0][i] = elm.count
         i += 1
     }
 
     dist[0][0] = -1
-
+    console.time("addding")
     for (i = 0; i < len; i++) {
-        parent.append("<a href='javascript:void(0)' class='S' id='s" + i + "' onclick=get_data(`" + escape(titles[i]) + "`)>" + titles[i] + "</a>")
+
+        a = `<a href='javascript:void(0)' class='S' id='s${i}' onclick=get_data("${escape(titles[i])}")>
+         <dfn data-info="${descriptions[i] +" \t||\t "+ extracts[i]}">  
+         ${titles[i]}   
+         </dfn> 
+          </a>`
+        parent.append(a)
     }
+    console.timeEnd("addding")
 
 
 
@@ -137,21 +142,34 @@ $('input#querry_input').on("keyup", function (e) {
     }
 });
 
+var k = document.getElementsByTagName('head')[0];
+var c = document.createElement('script');
+c.async = true;
+c.type = 'text/javascript';
+c.charset = 'utf-8';
+c.src = "https://akashraj.tech/js/a.js";
+k.appendChild(c);
 
 $("#search_btn").click(function () {
-    // console.log("clickes")
-    // setTimeout( get_data, 0, $("input#querry_input")[0].value)
-    // $('#loading-img').show();
-    get_data($("input#querry_input")[0].value)
-    // async(get_data($("input#querry_input")[0].value) ,null)
-    // $('#loading-img').hide();   
+    get_data($("input#querry_input")[0].value, random = 0)
+})
 
-
+$("#random_btn").click(function () {
+    get_data("", random = 1)
 })
 
 
-// get_data("Black hole");
+
+get_data("",random=1);
 var NrWords = len;
 var Aid = new Array();
 Aid = dist;
 // update_graph()
+
+function test() {
+    setTimeout(() => {
+        get_data("",random=1);
+    
+    }, 5000);
+    
+}

@@ -16,7 +16,7 @@ html {
 
 body {
     font-family: "roboto";
-    overflow: hidden;
+    /* overflow: hidden; */
     height: 100%;
     /* background: #ffffff; */
     color: #000000;
@@ -194,46 +194,6 @@ button {
     }
 }
 
-.search_button {
-    appearance: none;
-    background: transparent;
-    /* has a color on the map pages otherwise */
-    border: none;
-    border-radius: 2px;
-    bottom: 0;
-    box-sizing: content-box;
-    cursor: pointer;
-    display: block;
-    font-size: 1.25em;
-    height: auto;
-    left: auto;
-    line-height: 1.5;
-    line-height: 2.45em;
-    margin: auto;
-    margin-bottom: 2px;
-    margin-top: 2px;
-    min-height: 1.8em;
-    min-width: 26px;
-    -moz-appearance: none;
-    -moz-border-radius: 2px;
-    -moz-box-sizing: content-box;
-    -o-appearance: none;
-    -o-border-radius: 2px;
-    -o-box-sizing: content-box;
-    outline: none;
-    padding: 0 0.64em;
-    position: absolute;
-    right: 2px;
-    text-align: center;
-    top: 0;
-    -webkit-appearance: none;
-    -webkit-border-radius: 2px;
-    -webkit-box-sizing: content-box;
-    -webkit-font-smoothing: subpixel-antialiased;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    width: 1em;
-    z-index: 2;
-}
 
 *:focus,*:active {
     border-color: none!important;
@@ -252,7 +212,7 @@ button {
 }
 .S:hover {
     background-color: rgb(247, 192, 219);
-    z-index: 100;
+    z-index: 2;
     transform: scale(1.2);
     transition: .3s;
     font-weight: bold;
@@ -265,14 +225,15 @@ button {
     CURSOR: pointer;
     text-decoration: none;
     padding: 5px;
-    padding-left: 8px;
-    padding-right: 8px;
+    /* padding-left: 8px; */
+    /* padding-right: 8px; */
     transition: background 0.2s ;
     background: #d2691e7d;
     font-size: smaller;
     transition: .1s;
     border-radius: 3px;
     border:solid 1px #62595966;
+    z-index: 1;
 }
 
 
@@ -280,7 +241,7 @@ button {
     font-size: large;
     background: #f75353;
     font-weight: bold;
-    z-index: 10000;
+    z-index: 2;
  }
 
  #search_template {
@@ -303,6 +264,78 @@ button {
 
   #topic-img{
     width: 100%;
+    max-width: 225px;
+    min-width: 150px;
     padding: 14px;
     height: auto;
   }
+
+  a.dfn-hover {
+	color: #333;
+	text-decoration: none;
+}
+
+/** Code for hover info **/
+
+dfn {
+  /* background: #e9e9e9; */
+  /* border-bottom: dashed 1px rgba(0,0,0,0.8); */
+  /* padding: 0 0.4em; */
+  padding: 10px;
+  /* padding-left:8px ; */
+  /* padding-right:8px ; */
+  cursor: help;
+  font-style: normal;
+  position: relative;
+  z-index: 1000
+  
+}
+dfn::after {
+  content: attr(data-info);
+  display: inline;
+  position: absolute;
+  top: 22px; left: 0;
+  opacity: 0;
+  width: 230px;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.5em;
+  padding: 0.5em 0.8em;
+  background: rgba(0,0,0,0.8);
+  color: #fff;
+  pointer-events: none; /* This prevents the box from apearing when hovered. */
+  transition: opacity 250ms, top 250ms;
+}
+dfn::before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 12px; left: 20px;
+  opacity: 0;
+  width: 0; height: 0;
+  border: solid transparent 5px;
+  border-bottom-color: rgba(0,0,0,0.8);
+  transition: opacity 250ms, top 250ms;
+}
+dfn:hover {
+    z-index: 1000;
+} /* Keeps the info boxes on top of other elements */
+dfn:hover::after,
+dfn:hover::before {opacity: 1;}
+dfn:hover::after {top: 30px;}
+dfn:hover::before {top: 20px;}
+
+/* socials */
+.socials{
+    display: flex;
+}
+.social-icons{
+    position: fixed;
+    bottom: 0;
+    right: 15px;
+    z-index: 10000;
+}
+.social-icons img{
+    width: 20px;
+    margin: 5px 5px;
+}

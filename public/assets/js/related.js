@@ -31,7 +31,7 @@ function mg_2d_element(id) {
   // this.name=this.element.innerHTML;
   this.width = this.element.offsetWidth;
   this.height = this.element.offsetHeight;
-  this.inertia = 0.7;
+  this.inertia = 1.7;
   this.fixed = false; // if the element is pinned
 
   this.update = function (damper) {

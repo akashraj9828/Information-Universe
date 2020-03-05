@@ -1,10 +1,31 @@
-<!DOCTYPE html>
 <html>
 
    <head>
-      <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+      <meta name="author" content="Akash Raj">
+      <meta name="description"
+         content="Explore wikipedia like never explored before. Follow me @ github/akashraj9828 and www.akashraj.tech">
+      <meta name="Keywords"
+         content="Information universe,Wikipedia,api,scraping,pm2,nodejs,akash,raj,akashraj,akash raj,akashraj9828,akashraj.exe,tech,computer engineer,computer science,full stack,developer,front end,backend,programmer,machine learning,AI">
 
-      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- Open Graph / Facebook -->
+
+      <meta property="og:image" content="https://information-universe.herokuapp.com/favicon/android-chrome-512x512.png">
+      <meta property="og:type" content="website">
+      <meta property="og:url" content="https://information-universe.herokuapp.com/">
+      <meta property="og:title" content="Information Universe">
+      <meta property="og:description"
+         content="Explore wikipedia like never explored before. Follow me @ github/akashraj9828 and www.akashraj.tech">
+
+
+
+      <!-- Twitter -->
+      <meta property="twitter:image" content="https://information-universe.herokuapp.com/favicon/android-chrome-512x512.png">
+      <meta property="twitter:card" content="summary_large_image">
+      <meta property="twitter:url" content="https://information-universe.herokuapp.com/">
+      <meta property="twitter:title" content="Information Universe">
+      <meta property="twitter:description"
+         content="Explore wikipedia like never explored before. Follow me @ github/akashraj9828 and www.akashraj.tech">
+      <title>Information Universe</title>
 
 
       <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
@@ -14,50 +35,90 @@
       <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
       <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
 
-      <script type="text/javascript">
-      </script>
-
-      <title>Information Universe</title>
-
    </head>
-
    <body>
 
 
       <div class="container-fluid">
          <div class="row">
-            <div class="col-md-12">
-               <h3 class="text-center">
+            <div class="col-md-12 text-center">
+               <h3 class="d-inline">
                   Information-Universe
                </h3>
+
             </div>
          </div>
          <div class="row">
             <div class="col-md-12 text-center" id="title-center">
 
                <div class="input-group md-form form-sm form-2 pl-0">
-                  <input id="querry_input" class="form-control my-0 py-1 red-border" type="text" placeholder="Search"
-                     value="Black hole" aria-label="Search">
-                  <div class="input-group-append">
-                     <button id="search_btn" class="input-group-text red lighten-3" id="basic-text1"> Search <img src="./assets/images/loading.gif" id="loading-img" style="display:none;width: 20px;height: 20px;margin-left: 10px;"/> </button>
+                  <input id="querry_input" class="form-control my-1 py-1 red-border pl-3" type="text"
+                     placeholder="Search" value="" aria-label="Search">
+                  <div class="input-group-append my-1">
+                     <button id="search_btn" class="input-group-text red lighten-3"> Search <img
+                           src="./assets/images/loading.gif" id="loading-img"
+                           style="display:none;width: 20px;height: 20px;margin-left: 10px;" /> </button>
                   </div>
+                  <button id="random_btn" class="input-group-text red lighten-3 mx-2 my-1"> Random <img
+                        src="./assets/images/loading.gif" id="loading-img"
+                        style="display:none;width: 20px;height: 20px;margin-left: 10px;" /> </button>
                </div>
             </div>
          </div>
-         <div class="row">
-            <div class="col-md-3" id="side-info">
-               <img src="./assets/images/me.png" id="topic-img" alt="" srcset="">
-               <p id="description">Computer enthusiast who likes to make stuff</p>
+         <div class="row mx-0">
+            <div class="col-md-3 col-lg-2 order-2 order-md-1" id="side-info">
+               <div class="text-center">
+                  <img src="./assets/images/me.png" id="topic-img" alt="" srcset="">
+               </div>
+               <p id="description">I'm a computer enthusiast who likes to make stuff</p>
                <p id="extract">
                   This app lets you browse wikipedia in a new way. Have fun!
-                  Search any topic and begin your journey.
+                  Search any topic and begin your journey. Bon voyage!
                </p>
             </div>
-            <div class="col-md-9">
+            <div class="col-md-9 col-lg-10 order-1 order-md-2">
                <div id="gnodMap">
 
                </div>
             </div>
+         </div>
+
+         <div class="social-icons d-inline float-right">
+            <section class="socials">
+
+               <figure>
+                  <a href="https://twitter.com/akashraj9828" target="_blank"><img
+                        src="https://akashraj.tech/images/Contact/twitter.png" alt="Akash Raj on Twitter"></a>
+               </figure>
+
+               <figure>
+                  <a href="https://github.com/akashraj9828" target="_blank"><img
+                        src="https://akashraj.tech/images/Contact/github.png" alt="Akash Raj on Github"></a>
+               </figure>
+               <figure>
+                  <a href="https://www.linkedin.com/in/akashraj9828/" target="_blank"><img
+                        src="https://akashraj.tech/images/Contact/linkedin.png" alt="Akash Raj on Linkedin"></a>
+               </figure>
+
+               <figure>
+                  <a href="mailto:akashraj9828@gmail.com" target="_blank"><img
+                        src="https://akashraj.tech/images/Contact/email.png" alt="Contact Akash Raj on mail"></a>
+               </figure>
+
+               <figure>
+                  <a href="https://www.facebook.com/profile.php?id=100003852667560" target="_blank"><img
+                        src="https://akashraj.tech/images/Contact/facebook.png" alt="Akash Raj on Facebook"></a>
+               </figure>
+               <figure>
+                  <a href="https://www.instagram.com/akashraj.exe" target="_blank"><img
+                        src="https://akashraj.tech/images/Contact/instagram.png" alt="Akash Raj on Instagram"></a>
+               </figure>
+               <figure>
+                  <a href="https://www.akashraj.tech" target="_blank"><img
+                        src="https://akashraj.tech/images/Contact/domain.png" alt="Akash Raj's Website"></a>
+               </figure>
+
+            </section>
          </div>
 
 
