@@ -28,8 +28,8 @@ for (var i = 0; i < NrWords; i++) {
 }
 document.head.appendChild(style);
 
-var e = document.getElementById("the_title");
-e.style.backgroundColor = elementToColor(e);
+// var e = document.getElementById("the_title");
+// e.style.backgroundColor = elementToColor(e);
 
 // Title Clicking
 

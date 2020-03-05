@@ -3,6 +3,7 @@ const app = express()
 // const port = 3000
 
 var server = app.listen(process.env.PORT || 3000, listen)
+var wiki = require('wiki-page');
 
 function listen() {
     var host = server.address().address;
@@ -17,163 +18,80 @@ app.use(bodyParser.urlencoded({ // to support URL-encoded bodies
     extended: true
 }));
 
-var extract, links;
-
-
 app.use(express.json()); // to support JSON-encoded bodies
-
 
 app.use(express.static('public'))
 app.use('/static', express.static('public'))
 
-
 app.post('/get-data', function (req, res) {
-    // console.log("********************************************************************")
-    console.log("********************************************************************\n")
+
+    console.log("********************************************************************")
     console.log(req.body)
-    var res2 = magic(unescape(req.body.query), req.body.link).then(function () {
-        // console.log(links,extract)
+    console.log("********************************************************************")
+    
+    query_wiki(req.body.query,function(a) {
+        var result=a
         res.setHeader('Content-Type', 'application/json');
-
-        var obj = {
-            'extract': extract,
-            'links': links
-        }
-        // console.log(obj)
-        // res.send(obj)
-        obj = JSON.stringify(obj)
-        res.json(obj)
-
+        result = JSON.stringify(result)
+        res.json(result)
     })
 
-    console.log("\n********************************************************************")
-    // console.log("********************************************************************")
-});
+})
+
+var wiki = require('wiki-page');
+function query_wiki(title,callback) {
+
+    var res = {}
+    var related = {}
+
+    // get summmary
+    wiki.fetch({
+        section: 'page',
+        type: 'summary',
+        title: title,
+    }, (data) => {
+        res.description = data.description
+        res.extract = data.extract
+        res.image=check_key(data, "thumbnail") ? data.thumbnail.source : undefined
+        related[data.displaytitle] = pack(data, -1)
+
+        // get related pages
+        wiki.fetch({
+            section: 'page',
+            type: 'related', //links
+            title: title,
+        }, (data) => {
+            for (i in data.pages) {
+                elm = data.pages[i]
+                temp_obj = pack(elm, i)
+                title = temp_obj.title
+                related[title] = temp_obj
+            }
+            res.related = related
+            callback(res)
+        });
+    });
+}
 
 
-// app.get('/', (req, res) => res.send('Hello World!'))
+function pack(data, count) {
+    temp_obj = {}
+    elm = data
 
+    temp_obj.title = check_key(elm, "displaytitle") ? elm.displaytitle : undefined
+    temp_obj.description = check_key(elm, "description") ? elm.description : undefined
+    temp_obj.extract = check_key(elm, "extract") ? elm.extract : undefined
+    temp_obj.link = check_key(elm, "content_urls") ? elm.content_urls.desktop.page : undefined
+    temp_obj.image = check_key(elm, "thumbnail") ? elm.thumbnail.source : undefined
+    temp_obj.count = count
 
+    return temp_obj
+}
 
-
-function magic(text, link = false) {
-
-    var result = {}
-    // var extract = ""
-    // var links = []
-    const rp = require('request-promise');
-    const $ = require('cheerio');
-    const url = 'https://en.wikipedia.org/wiki/' + text;
-    const url2 = 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=' + text;
-
-    // // console.log("aaaaaaaaaaa")
-
-    return rp(url2).then(function (html) {
-        // console.log("aaaaaaaaaaa")
-        // console.log(html)
-        var res = JSON.parse(html)
-        // console.log(res)
-        var res2 = res.query.pages[Object.keys(res.query.pages)[0]].extract
-        // result['extract'] = res2;
-        extract = res2
-        // console.log(res2)
-
-        // console.log(result['extract']);
-
-
-        return rp(url).then(function (html) {
-                //success!
-                // console.log("aaaaaaaaaaa")
-                // var rem=$('.reflist',html).remove();
-                // rem=$('.refbegin',rem).remove();
-                // rem=$('.catlinks',rem).remove();
-                const a_elements = $('#content a', html);
-                var list = [];
-                // const yy = $('#content .reflist a', html);
-                // const zz = $('#content .refbegin a', html);
-                // console.log(yy,zz);
-                var not_required_list = []
-
-                for (let i = 0; i < a_elements.length; i++) {
-                    var title = a_elements[i].attribs.title;
-                    var link = a_elements[i].attribs.href;
-                    if (a_elements[i].attribs.href == undefined || a_elements[i].attribs.title == undefined) {
-                        continue;
-                    }
-
-                    if (title.includes("/")) {
-                        continue;
-                    }
-
-                    if (title.toLowerCase().includes("wikipedia") || title.toLowerCase().includes("edit") || title.toLowerCase().includes("bibcode") || title.toLowerCase().includes("help") || title.toLowerCase().includes("oclc")|| title.toLowerCase().includes("arxiv")) {
-                        continue;
-                    }
-
-                    if (title.length > 30) {
-                        continue;
-                    }
-
-                    if (link.toLowerCase().includes(".jpg") || link.toLowerCase().includes(".png") || link.toLowerCase().includes(".gif")) {
-                        continue;
-                    }
-
-                    var found = false;
-                    for (var j = 0; j < list.length; j++) {
-                        if (list[j].title === a_elements[i].attribs.title) {
-                            list[j].count = list[j].count + 1;
-                            found = true;
-                            break;
-                        }
-                    }
-                    if (!found) {
-                        list.push({
-                            link: a_elements[i].attribs.href,
-                            title: a_elements[i].attribs.title,
-                            count: 1
-                        })
-                    }
-                }
-
-                // console.log(list.slice(0,50))
-
-                list.sort(function (a, b) {
-                    return b.count - a.count
-                })
-
-                // for (va/r j = 0; j < list.length; j++) {
-
-                // console.log(list[j])
-                // console.log(b[j].count)
-                // }
-                // result["links"] = list
-                list = list.slice(0, 30)
-                list.unshift({
-                    link: url,
-                    title: text,
-                    count: -1
-                })
-                links = list
-                // console.log(list)
-                // console.log(result['links'])
-
-
-
-            })
-            .catch(function (err) {
-                //handle error
-            });
-        // console.log(extract, links);
-
-        // return {"extract":extract,"links":links}
-
-
-
-    })
-
-
-
-    // console.log("1111111111")
-
-
-    // console.log(result['links'])
+function check_key(data, key) {
+    if (data.hasOwnProperty(key)) {
+        return true
+    } else {
+        return false
+    }
 }

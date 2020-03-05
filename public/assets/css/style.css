@@ -1,0 +1,308 @@
+
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap');
+
+/* border-box layout for all elements */
+*,
+*:before,
+*:after {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    font-family: "roboto";
+    overflow: hidden;
+    height: 100%;
+    /* background: #ffffff; */
+    color: #000000;
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    font-weight: 300;
+
+    background: #536976;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #292E49, #536976);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #292E49, #536976);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    background: #F7F8F8;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #ACBB78, #F7F8F8);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #ACBB78, #F7F8F8); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+
+    /* Webkit based browsers have a grey background
+      in radio buttons. To get rid of them, -webkit-appearance: none is
+      needed. That makes them invisible in some browsers.
+      So there is a lot of styling needed to make them look right: */
+    input[type=radio] {
+        -webkit-appearance: none;
+        height: 1em;
+        width: 1em;
+        border: 1px solid #000000;
+        cursor: pointer;
+        border-radius: 2em;
+    }
+
+    input[type=radio]:checked {
+        background-color: #000000;
+    }
+}
+
+input[type=text],
+input[type=submit],
+textarea,
+button {
+    /* border: 1px solid #404040; */
+    font-weight: 300;
+    -webkit-appearance: none;
+    -webkit-border-radius: 4px 4px 4px 4px;
+    vertical-align: middle;
+    padding: 4px;
+}
+
+/* prevent fireox from displaying an outline when the button is clicked: */
+button::-moz-focus-inner {
+    border: 0;
+}
+
+a {
+    color: #000000;
+    text-decoration: none;
+    outline: 0;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+
+
+form {
+    margin: 0;
+}
+
+input::-moz-focus-inner {
+    border: 0;
+}
+
+input[type="submit"],
+.continue,
+button {
+    background-color: #ffffff;
+    border-radius: 4px 4px 4px 4px;
+    border: 1px solid #202020;
+    color: #000;
+    cursor: pointer;
+    font-size: 17px;
+    padding: 6px 12px;
+    vertical-align: middle;
+    outline: 0;
+    /* without the following 2 styles, my ipad 2 will make funny things with
+      input[type=submit] elements. 2013-09-04 /mg */
+    -webkit-appearance: none;
+    -webkit-border-radius: 4px 4px 4px 4px;
+}
+
+
+
+.universe {
+    height: 100%;
+    width: 100%;
+}
+
+
+
+
+#f {
+    /* border: 0; */
+    /* position: absolute; */
+    left: 0px;
+    /* top: 0px; */
+    width: 211px;
+    height: 51px;
+    background: transparent;
+    font-size: 30px;
+}
+
+#f:focus {
+    outline: none;
+}
+
+.map_info {
+    text-align: left;
+    vertical-align: top;
+    width: 220px;
+    background: #f5f5f5;
+    padding-top: 1em;
+    bottom: 0;
+    top: 80px;
+    position: absolute;
+}
+
+.map_info p {
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 0;
+}
+
+#gnodMap {
+    height: 100%;
+    width: 100%;
+    min-height: 500px;
+    /* position: absolute;
+    left: 230px;
+    top: 80px;
+    right: 0px;
+    bottom: 0px;
+    box-shadow: inset 4px 4px 0px #f5f5f5; */
+}
+
+
+
+@media (max-width: 500px) {
+
+    .map_info {
+        top: calc(100% - 120px);
+        bottom: 0;
+        width: 100%;
+        height: 120px;
+        padding-top: 4px;
+        background: #fff;
+    }
+
+    .map_info_text {
+        display: none;
+    }
+
+    #gnodMap {
+        /* bottom: 121px;
+        left: 0px;
+        top: 70px;
+        right: 0px;
+        box-shadow: none; */
+    }
+}
+
+.search_button {
+    appearance: none;
+    background: transparent;
+    /* has a color on the map pages otherwise */
+    border: none;
+    border-radius: 2px;
+    bottom: 0;
+    box-sizing: content-box;
+    cursor: pointer;
+    display: block;
+    font-size: 1.25em;
+    height: auto;
+    left: auto;
+    line-height: 1.5;
+    line-height: 2.45em;
+    margin: auto;
+    margin-bottom: 2px;
+    margin-top: 2px;
+    min-height: 1.8em;
+    min-width: 26px;
+    -moz-appearance: none;
+    -moz-border-radius: 2px;
+    -moz-box-sizing: content-box;
+    -o-appearance: none;
+    -o-border-radius: 2px;
+    -o-box-sizing: content-box;
+    outline: none;
+    padding: 0 0.64em;
+    position: absolute;
+    right: 2px;
+    text-align: center;
+    top: 0;
+    -webkit-appearance: none;
+    -webkit-border-radius: 2px;
+    -webkit-box-sizing: content-box;
+    -webkit-font-smoothing: subpixel-antialiased;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    width: 1em;
+    z-index: 2;
+}
+
+*:focus,*:active {
+    border-color: none!important;
+    box-shadow: none !important;
+    outline: none!important;
+}
+
+#title-center {
+    max-width: 350px;
+    margin: auto;
+}
+
+#description{
+    font-style: italic;
+    font-weight: 500;
+}
+.S:hover {
+    background-color: rgb(247, 192, 219);
+    z-index: 100;
+    transform: scale(1.2);
+    transition: .3s;
+    font-weight: bold;
+ }
+ .S {
+    position: absolute;
+    visibility: visible;
+    top: -500px;
+    font-size: 15px;
+    CURSOR: pointer;
+    text-decoration: none;
+    padding: 5px;
+    padding-left: 8px;
+    padding-right: 8px;
+    transition: background 0.2s ;
+    background: #d2691e7d;
+    font-size: smaller;
+    transition: .1s;
+    border-radius: 3px;
+    border:solid 1px #62595966;
+}
+
+
+ #s0 {
+    font-size: large;
+    background: #f75353;
+    font-weight: bold;
+    z-index: 10000;
+ }
+
+ #search_template {
+    display: block;
+    right: 10px;
+    position: absolute;
+ }
+
+ #side-info {
+    max-height: 80vh;
+    overflow: overlay;
+    background: #00000024;
+    border-radius: 15px;
+ }
+
+
+  *::-webkit-scrollbar {
+    display: none;
+  }
+
+  #topic-img{
+    width: 100%;
+    padding: 14px;
+    height: auto;
+  }
