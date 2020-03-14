@@ -5,9 +5,12 @@
       <meta name="description"
          content="Explore wikipedia like never explored before. Follow me @ github/akashraj9828 and www.akashraj.tech">
       <meta name="Keywords"
-         content="Information universe,Wikipedia,api,scraping,pm2,nodejs,akash,raj,akashraj,akash raj,akashraj9828,akashraj.exe,tech,computer engineer,computer science,full stack,developer,front end,backend,programmer,machine learning,AI">
+         content="Information universe,Wikipedia,api,web,scraping,pm2,nodejs,akash,raj,akashraj,akash raj,akashraj9828,akashraj.exe,tech,computer engineer,computer science,full stack,developer,front end,backend,programmer,machine learning,AI">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta name="google-site-verification" content="29VDwzTbFE9v6Tym_54m2BcxLMpF4LSegMfBqqrLES0" />
+      <meta name="theme-color" content="#151823">
+
+
       <!-- Open Graph / Facebook -->
 
       <meta property="og:image" content="https://information-universe.herokuapp.com/favicon/android-chrome-512x512.png">
@@ -31,6 +34,8 @@
 
 
       <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+      <link rel="stylesheet"
+         href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/themes/smoothness/jquery-ui.css" />
       <link rel="stylesheet" href="./assets/css/style.css">
 
       <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
@@ -43,47 +48,69 @@
 
 
       <div class="container-fluid">
-         <div class="row">
-            <div class="col-md-12 text-center">
+         <!-- <div class="row">
+             <div class="col-md-12 text-center">
                <h3 class="d-inline">
                   Information-Universe
                </h3>
 
             </div>
-         </div>
-         <div class="row">
+         </div> -->
+         <div class="row mt-4">
             <div class="col-md-12 text-center" id="title-center">
 
                <div class="input-group md-form form-sm form-2 pl-0">
                   <input id="querry_input" class="form-control my-1 py-1 red-border pl-3" type="text"
                      placeholder="Search" value="" aria-label="Search">
+                     
                   <div class="input-group-append my-1">
-                     <button id="search_btn" class="input-group-text red lighten-3"> Search <img
-                           src="./assets/images/loading.gif" id="loading-img"
-                           style="display:none;width: 20px;height: 20px;margin-left: 10px;" /> </button>
+                     <button id="search_btn" class="input-group-text red lighten-3" title="Search"><img
+                        src="./assets/images/search.png" id=""
+                        style="width: 20px;height: 20px" title="Search" /></button>
                   </div>
-                  <button id="random_btn" class="input-group-text red lighten-3 mx-2 my-1"> Random <img
-                        src="./assets/images/loading.gif" id="loading-img"
-                        style="display:none;width: 20px;height: 20px;margin-left: 10px;" /> </button>
+                  <button id="random_btn" class="input-group-text red lighten-3 mx-2 my-1" title="Random"><img
+                     src="./assets/images/dice.png" id=""
+                     style="width: 20px;height: 20px" title="Random" /></button>
+
                </div>
+
             </div>
          </div>
          <div class="row mx-0">
-            <div class="col-md-3 col-lg-2 order-2 order-md-1" id="side-info">
+            <div class="col-md-4 col-lg-2 order-2 order-md-1" id="side-info">
+               <h6 class="sidebar-title text-center pt-1"> Intro </h6>
                <div class="text-center">
-                  <img src="./assets/images/me.png" id="topic-img" alt="" srcset="">
+                  <img src="./assets/images/me.png" class="pt-0" id="topic-img" alt="" srcset="">
                </div>
+
+               <div class="search-engine py-1">
+                  <a class="google_link" target="_blank" href="https://google.com" title="Search on google"><img
+                        class="wiki-google-icon" src="./assets/images/google.png" alt="" srcset=""></a>
+                  <a class="wikipedia_link" target="_blank" href="https://wikipedia.com" title="See on Wikipedia"><img
+                        class="wiki-google-icon" src="./assets/images/wikipedia.png" alt="" srcset=""></a>
+                  <button class="share_btn btn p-0"  title="Share with friends"><img class="wiki-google-icon" src="./assets/images/share.png" alt="" srcset=""></button>
+               </div>
+
                <p id="description">I'm a computer enthusiast who likes to make stuff</p>
                <p id="extract">
                   This app lets you browse wikipedia in a new way. Have fun!
                   Search any topic and begin your journey. Bon voyage!
                </p>
             </div>
-            <div class="col-md-9 col-lg-10 order-1 order-md-2">
+            <div class="col-md-8 col-lg-10 order-1 order-md-2">
                <div id="gnodMap">
-
+                  <img src="./assets/images/loading.gif" class="loading-img"
+                     style="display:none; width: 100px; float: right;" />
+               </div>
+               <div class="navigation">
+                  <div class="btn-group mr-2" role="group" aria-label="First group">
+                     <button id="back_btn" class="border-right-light  min-100px btn btn-info" onclick="goBack()"> Back
+                     </button>
+                     <button id="forward_btn" class="min-100px btn btn-info" onclick="goForward()"> Forward</button>
+                  </div>
                </div>
             </div>
+
          </div>
 
          <div class="social-icons d-inline float-right">
@@ -128,7 +155,7 @@
       </div>
 
       <script src="./assets/js/jquery-minified.js"></script>
-
+      <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
       <script>
          var NrWords 
       </script>

@@ -5,7 +5,6 @@ const app = express()
 var server = app.listen(process.env.PORT || 3000, listen)
 var wiki = require('wiki-page');
 var bodyParser = require('body-parser')
-const https = require('https');
 const request = require('request')
 
 var dateFormat = require('dateformat');
@@ -49,42 +48,43 @@ app.use('/static', express.static('public'))
 
 app.post('/get-data', function (req, res) {
 
+    console.time("Request time")
     console.log("********************************************************************")
     // console.log(req.body)
     var result
+    var topic = ""
     if (req.body.random == 0) {
-        query_wiki(req.body.query, function (a) {
-            result = a
-            build_msg(result)
-            res.setHeader('Content-Type', 'application/json');
-            result = JSON.stringify(result)
-            res.json(result)
-        })
+        topic = req.body.query
     } else if (req.body.random == 1) {
-
-
-        random_topic = coin ? not_random_list[between(0, not_random_list.length)] : random_list[between(0, random_list.length)]
-        coin != coin
-        query_wiki(random_topic, function (a) {
-            result = a
-            build_msg(result)
-            res.setHeader('Content-Type', 'application/json');
-            result = JSON.stringify(result)
-            res.json(result)
-        })
-        random_count += 1
-        if (random_count > 30) {
-            random_topic = []
-            console.log("Updating random!")
-            make_random_list()
-            random_count = 0
-        }
+        topic = get_random_topic()
     }
+    query_wiki(topic, function (a) {
+        result = a
+        build_msg(result)
+        res.setHeader('Content-Type', 'application/json');
+        result = JSON.stringify(result)
+        res.json(result)
+        console.timeEnd("Request time")
+    })
 
 
     // console.log("Finished request!")
     console.log("********************************************************************")
 })
+
+function get_random_topic() {
+    // random_topic = coin ? not_random_list[between(0, not_random_list.length)] : random_list[between(0, random_list.length)]
+    random_topic = coin ? not_random_list[Math.floor(Math.random() * not_random_list.length)]: random_list[Math.floor(Math.random() * random_list.length)]
+    coin != coin
+    random_count += 1
+    if (random_count > 30) {
+        random_topic = []
+        console.log("Updating random!")
+        make_random_list()
+        random_count = 0
+    }
+    return random_topic
+}
 
 
 function query_wiki(title, callback) {
@@ -97,7 +97,10 @@ function query_wiki(title, callback) {
     var res = {}
     var related = {}
 
+    var req1 = false
+    var req2 = false
     // get summmary
+    // console.log("---: functionquery_wiki -> get summmary");
     wiki.fetch({
         section: 'page',
         type: 'summary',
@@ -111,20 +114,35 @@ function query_wiki(title, callback) {
         related[data.displaytitle] = pack(data, -1)
 
         // get related pages
-        wiki.fetch({
-            section: 'page',
-            type: 'related', //links
-            title: title,
-        }, (data) => {
-            for (i in data.pages) {
-                elm = data.pages[i]
-                temp_obj = pack(elm, i)
-                title = temp_obj.title
-                related[title] = temp_obj
-            }
-            res.related = related
+        // console.log("---: functionquery_wiki -> finished summmary");
+        req1 = true
+        if (req1 && req2) {
+            // console.log("---: functionquery_wiki -> returned data 1");
             callback(res)
-        });
+        }
+    });
+    // console.log("---: functionquery_wiki -> get related;", );
+
+    wiki.fetch({
+        section: 'page',
+        type: 'related', //links
+        title: title,
+    }, (data) => {
+        for (i in data.pages) {
+            elm = data.pages[i]
+            temp_obj = pack(elm, i)
+            title = temp_obj.title
+            related[title] = temp_obj
+        }
+        res.related = related
+
+        // console.log("---: functionquery_wiki -> finished related");
+        req2 = true
+        if (req1 && req2) {
+            // console.log("---: functionquery_wiki -> returned data 2");
+            callback(res)
+
+        }
     });
 }
 
@@ -158,18 +176,12 @@ function between(min, max) {
 }
 
 function make_random_list() {
+
     console.log("Generating random list");
-    https.get('https://en.wikipedia.org/w/api.php?action=query&generator=random&grnnamespace=0&format=json&grnlimit=500', (response) => {
-        let result = '';
-        // // called when a data chunk is received.
-        response.on('data', (chunk) => {
-            result += chunk;
-
-        });
-
-        response.on('end', () => {
-
-            result = JSON.parse(result)
+    request('https://en.wikipedia.org/w/api.php?action=query&generator=random&grnnamespace=0&format=json&grnlimit=500', function (error, response, body) {
+        if (!error) {
+            let result = '';
+            result = JSON.parse(response.body)
             keys = Object.keys(result.query.pages)
             for (e in keys) {
                 k = keys[e]
@@ -177,20 +189,11 @@ function make_random_list() {
             }
             console.log("Generated random list");
             // console.log(random_list);
-
-
-        });
-
-    }).on("error", (error) => {
-        console.log("Error getting random: " + error.message);
-        console.log("Retrying in 10s");
-        setTimeout(() => {
-            make_random_list()
-        }, 10000);
-
-    });
-    return
-
+        } else {
+            console.log(error);
+            console.log("Error getting random: " + error.message);
+        }
+    })
 }
 var msg = {
     "blocks": []

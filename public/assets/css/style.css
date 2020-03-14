@@ -23,19 +23,20 @@ body {
     padding: 0;
     font-size: 16px;
     font-weight: 300;
+    background: #151823;
 
-    background: #F7F8F8;
+    /* background: #F7F8F8; */
     /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #ACBB78, #F7F8F8);
+    /* background: -webkit-linear-gradient(to right, #ACBB78, #F7F8F8); */
     /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #ACBB78, #F7F8F8);
+    /* background: linear-gradient(to right, #ACBB78, #F7F8F8); */
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
-    background: #F7F8F8;
+    /* background: #F7F8F8; */
     /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #ACBB78, #F7F8F8);
+    /* background: -webkit-linear-gradient(to right, #ACBB78, #F7F8F8); */
     /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #ACBB78, #F7F8F8);
+    /* background: linear-gradient(to right, #ACBB78, #F7F8F8); */
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
 
@@ -185,7 +186,8 @@ button {
 }
 
 #title-center {
-    max-width: 350px;
+    min-width: 350px;
+    max-width: 500px;
     margin: auto;
 }
 
@@ -238,8 +240,8 @@ button {
 #side-info {
     max-height: 80vh;
     overflow: overlay;
-    background: #00000024;
-    border-radius: 15px;
+    background: #fff7f7d6;
+    border-radius: 5px;
 }
 
 
@@ -341,4 +343,134 @@ dfn:hover::before {
 .social-icons img {
     width: 20px;
     margin: 5px 5px;
+}
+
+.halucinate{
+    /* -webkit-animation: change-col 2s infinite linear; */
+    animation: change-col 5s linear  infinite ;
+
+}
+
+@-webkit-keyframes change-col {
+    0% {
+        filter: hue-rotate(0deg);
+    }
+    
+    100% {
+        filter: hue-rotate(360deg);
+        /* -webkit-transform: rotate(0deg); */
+    }
+}
+
+.wiki-google-icon{
+width: 35px;
+}
+
+.search-engine{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.navigation{
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    bottom: 10px;
+}
+
+.min-100px{
+    min-width: 100px;
+}
+
+.S{
+    /* color: #252B37; */
+    color:#0fffc1;
+    background-color: #151823d1;
+    /* animation: textColor     10s ease infinite; */
+    /* animation: rotate-shadow     2s ease infinite; */
+}
+#s0{
+    background-color: #36bb87;
+    color:#151823;
+}
+/* .S:after{ */
+    /* animation: animateGlow 10s ease infinite;
+    background: linear-gradient(270deg, #0fffc1, #7e0fff);
+    background-size: 200% 200%;
+    -webkit-filter: blur(5vw);
+  -moz-filter: blur(5vw);
+  -ms-filter: blur(5vw);
+  filter: blur(5vw); */
+/* } */
+/* //x y blur spred color  / */
+/* @keyframes rotate-shadow{
+    0%{                   
+        box-shadow: 5px 5px 5px 0px #ffffff6b;
+    }  
+    25%{                   
+        box-shadow: 5px -5px 5px 0px #ffffff6b;
+    }  
+    50%{                   
+        box-shadow: -5px -5px 5px 0px #ffffff6b;
+    }  
+    100%{                   
+        box-shadow: -5px 5px 5px 0px #ffffff6b;
+    }  
+} */
+/* @keyframes animateGlow {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  @keyframes textColor {
+    0% {
+      color: #7e0fff;
+    }
+    50% {
+      color: #0fffc1;
+    }
+    100% {
+      color: #7e0fff;
+    }
+  } */
+  
+body{
+
+    background: linear-gradient(65deg, #151823, #374269);
+background-size: 400% 400%;
+
+-webkit-animation: bg-animate 33s ease infinite;
+-moz-animation: bg-animate 33s ease infinite;
+-o-animation: bg-animate 33s ease infinite;
+animation: bg-animate 33s ease infinite;
+
+
+}
+
+  @-webkit-keyframes bg-animate {
+    0%{background-position:0% 2%}
+    50%{background-position:100% 99%}
+    100%{background-position:0% 2%}
+}
+@-moz-keyframes bg-animate {
+    0%{background-position:0% 2%}
+    50%{background-position:100% 99%}
+    100%{background-position:0% 2%}
+}
+@-o-keyframes bg-animate {
+    0%{background-position:0% 2%}
+    50%{background-position:100% 99%}
+    100%{background-position:0% 2%}
+}
+@keyframes bg-animate {
+    0%{background-position:0% 2%}
+    50%{background-position:100% 99%}
+    100%{background-position:0% 2%}
 }
