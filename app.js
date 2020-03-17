@@ -249,8 +249,6 @@ var warned = false
 var msg_buffer = []
 var msg_in_progress = false
 
-webhook_url = "https://httpdump.io/spl9r"
-
 function build_msg(data) {
     if (webhook_url) {
         msg_count += 1
@@ -350,7 +348,7 @@ function send_msg(msg) {
             return
         }
         console.log(`statusCode: ${res.statusCode}`)
-        console.log(body)
+        // console.log(body)
         msg_in_progress = false
     })
 }
