@@ -47,30 +47,65 @@
    <body>
 
 
-      <div class="container-fluid">
-         <!-- <div class="row">
-             <div class="col-md-12 text-center">
-               <h3 class="d-inline">
+      <div class="start container-fluid">
+
+         <div class="row shift-up-bit">
+            <div class="col-md-12 text-center  mb-4">
+               <!-- <img src="./favicon/android-chrome-512x512.png" class="banner-img" alt="Information-Universe"> -->
+               <h3 class="banner-info-uni">
                   Information-Universe
                </h3>
+               <h6 class="banner-info-uni">
+                  // Explore wikipedia like never before //
+               </h6>
 
             </div>
-         </div> -->
+            <div class="col-md-12 text-center" id="title-center">
+
+               <div class="input-group md-form form-sm form-2 pl-0">
+                  <input id="" class="querry_input form-control my-1 py-1 red-border pl-3" type="text"
+                     placeholder="Search" value="" aria-label="Search">
+
+                  <div class="input-group-append my-1">
+                     <button id="search_btn" class="input-group-text red lighten-3" title="Search"><img
+                           src="./assets/images/search.png" id="" style="width: 20px;height: 20px"
+                           title="Search" /></button>
+                  </div>
+                  <button id="random_btn" class="input-group-text red lighten-3 mx-2 my-1" title="Roll a dice!"><img
+                        src="./assets/images/dice.png" id="" style="width: 20px;height: 20px"
+                        title="Roll a dice!" /></button>
+
+               </div>
+
+
+            </div>
+            <div id="random-suggestion-holder" class="mt-5">
+
+            </div>
+
+         </div>
+
+
+      </div>
+
+
+      <div class="app container-fluid" style="display: none;">
+
          <div class="row mt-4">
             <div class="col-md-12 text-center" id="title-center">
 
                <div class="input-group md-form form-sm form-2 pl-0">
-                  <input id="querry_input" class="form-control my-1 py-1 red-border pl-3" type="text"
+                  <input id="" class="querry_input form-control my-1 py-1 red-border pl-3" type="text"
                      placeholder="Search" value="" aria-label="Search">
-                     
+
                   <div class="input-group-append my-1">
                      <button id="search_btn" class="input-group-text red lighten-3" title="Search"><img
-                        src="./assets/images/search.png" id=""
-                        style="width: 20px;height: 20px" title="Search" /></button>
+                           src="./assets/images/search.png" id="" style="width: 20px;height: 20px"
+                           title="Search" /></button>
                   </div>
-                  <button id="random_btn" class="input-group-text red lighten-3 mx-2 my-1" title="Random"><img
-                     src="./assets/images/dice.png" id=""
-                     style="width: 20px;height: 20px" title="Random" /></button>
+                  <button id="random_btn" class="input-group-text red lighten-3 mx-2 my-1" title="Roll a dice!"><img
+                        src="./assets/images/dice.png" id="" style="width: 20px;height: 20px"
+                        title="Roll a dice!" /></button>
 
                </div>
 
@@ -88,7 +123,8 @@
                         class="wiki-google-icon" src="./assets/images/google.png" alt="" srcset=""></a>
                   <a class="wikipedia_link" target="_blank" href="https://wikipedia.com" title="See on Wikipedia"><img
                         class="wiki-google-icon" src="./assets/images/wikipedia.png" alt="" srcset=""></a>
-                  <button class="share_btn btn p-0"  title="Share with friends"><img class="wiki-google-icon" src="./assets/images/share.png" alt="" srcset=""></button>
+                  <button class="share_btn btn p-0" title="Share with friends"><img class="wiki-google-icon"
+                        src="./assets/images/share.png" alt="" srcset=""></button>
                </div>
 
                <p id="description">I'm a computer enthusiast who likes to make stuff</p>
@@ -97,61 +133,139 @@
                   Search any topic and begin your journey. Bon voyage!
                </p>
             </div>
-            <div class="col-md-8 col-lg-10 order-1 order-md-2">
+            <div class="col-md-4 col-lg-8 order-1 order-md-2">
                <div id="gnodMap">
                   <img src="./assets/images/loading.gif" class="loading-img"
                      style="display:none; width: 100px; float: right;" />
                </div>
                <div class="navigation">
                   <div class="btn-group mr-2" role="group" aria-label="First group">
-                     <button id="back_btn" class="border-right-light  min-100px btn btn-info" onclick="goBack()"> Back
+                     <button id="back_btn" class="border-right-light  min-100px btn btn-info" onclick="goBack()">
+                        Back
                      </button>
-                     <button id="forward_btn" class="min-100px btn btn-info" onclick="goForward()"> Forward</button>
+                     <button id="forward_btn" class="min-100px btn btn-info" onclick="goForward()">
+                        Forward</button>
                   </div>
                </div>
+            </div>
+            <div class="col-md-4 col-lg-2  my-1 my-md-0 order-3 order-md-3" id="side-info">
+               <h6 class="text-center pt-1"> History </h6>
+               <ol class="history-list px-1">
+               </ol>
+
+            </div>
+
+
+         </div>
+
+
+
+
+      </div>
+
+
+
+
+      <div class="info-panel row mx-0 h-100 w-100">
+         <div class="col-12 h-100" id="my-info">
+            <h2 class="text-center pt-5 pb-2 underline"> Information-Universe </h2>
+            <div class="text-center">
+               <img src="./assets/images/me.png" class="pt-0" id="my-img" alt="" srcset="">
+               <h3 class="text-center"> Akash Raj </h3>
+            </div>
+
+            <div class="social-icons info-icons">
+               <section class="socials">
+
+                  <figure>
+                     <a href="https://twitter.com/akashraj9828" target="_blank"><img
+                           src="https://akashraj.tech/images/Contact/twitter.png" alt="Akash Raj on Twitter"></a>
+                  </figure>
+
+                  <figure>
+                     <a href="https://github.com/akashraj9828" target="_blank"><img
+                           src="https://akashraj.tech/images/Contact/github.png" alt="Akash Raj on Github"></a>
+                  </figure>
+                  <figure>
+                     <a href="https://www.linkedin.com/in/akashraj9828/" target="_blank"><img
+                           src="https://akashraj.tech/images/Contact/linkedin.png" alt="Akash Raj on Linkedin"></a>
+                  </figure>
+
+                  <figure>
+                     <a href="mailto:akashraj9828@gmail.com" target="_blank"><img
+                           src="https://akashraj.tech/images/Contact/email.png" alt="Contact Akash Raj on mail"></a>
+                  </figure>
+
+                  <figure>
+                     <a href="https://www.facebook.com/profile.php?id=100003852667560" target="_blank"><img
+                           src="https://akashraj.tech/images/Contact/facebook.png" alt="Akash Raj on Facebook"></a>
+                  </figure>
+                  <figure>
+                     <a href="https://www.instagram.com/akashraj.exe" target="_blank"><img
+                           src="https://akashraj.tech/images/Contact/instagram.png" alt="Akash Raj on Instagram"></a>
+                  </figure>
+                  <figure>
+                     <a href="https://www.akashraj.tech" target="_blank"><img
+                           src="https://akashraj.tech/images/Contact/domain.png" alt="Akash Raj's Website"></a>
+                  </figure>
+
+               </section>
+            </div>
+
+            <div class="container text-center">
+               <p id="my-description">I'm a computer enthusiast who likes to make stuff</p>
+               <p id="my-extract">
+                  This app lets you browse wikipedia in a new way. Have fun!
+                  Search any topic and begin your journey. Bon voyage!
+               </p>
             </div>
 
          </div>
 
-         <div class="social-icons d-inline float-right">
-            <section class="socials">
+      </div>
 
-               <figure>
-                  <a href="https://twitter.com/akashraj9828" target="_blank"><img
-                        src="https://akashraj.tech/images/Contact/twitter.png" alt="Akash Raj on Twitter"></a>
-               </figure>
-
-               <figure>
-                  <a href="https://github.com/akashraj9828" target="_blank"><img
-                        src="https://akashraj.tech/images/Contact/github.png" alt="Akash Raj on Github"></a>
-               </figure>
-               <figure>
-                  <a href="https://www.linkedin.com/in/akashraj9828/" target="_blank"><img
-                        src="https://akashraj.tech/images/Contact/linkedin.png" alt="Akash Raj on Linkedin"></a>
-               </figure>
-
-               <figure>
-                  <a href="mailto:akashraj9828@gmail.com" target="_blank"><img
-                        src="https://akashraj.tech/images/Contact/email.png" alt="Contact Akash Raj on mail"></a>
-               </figure>
-
-               <figure>
-                  <a href="https://www.facebook.com/profile.php?id=100003852667560" target="_blank"><img
-                        src="https://akashraj.tech/images/Contact/facebook.png" alt="Akash Raj on Facebook"></a>
-               </figure>
-               <figure>
-                  <a href="https://www.instagram.com/akashraj.exe" target="_blank"><img
-                        src="https://akashraj.tech/images/Contact/instagram.png" alt="Akash Raj on Instagram"></a>
-               </figure>
-               <figure>
-                  <a href="https://www.akashraj.tech" target="_blank"><img
-                        src="https://akashraj.tech/images/Contact/domain.png" alt="Akash Raj's Website"></a>
-               </figure>
-
-            </section>
-         </div>
+      <button id="info_btn" class="input-group-text red lighten-3 mx-2 my-1" title="?"><img
+            src="./assets/images/question.png" id="" style="width: 20px;height: 20px" title="?" /></button>
+      <a href="./" id="home_btn" class="input-group-text red lighten-3 mx-2 my-1" title="Home"><img
+            src="./assets/images/home.png" id="" style="width: 20px;height: 20px" title="Home" /></a>
 
 
+      <div class="social-icons d-inline float-right">
+         <section class="socials">
+
+            <figure>
+               <a href="https://twitter.com/akashraj9828" target="_blank"><img
+                     src="https://akashraj.tech/images/Contact/twitter.png" alt="Akash Raj on Twitter"></a>
+            </figure>
+
+            <figure>
+               <a href="https://github.com/akashraj9828" target="_blank"><img
+                     src="https://akashraj.tech/images/Contact/github.png" alt="Akash Raj on Github"></a>
+            </figure>
+            <figure>
+               <a href="https://www.linkedin.com/in/akashraj9828/" target="_blank"><img
+                     src="https://akashraj.tech/images/Contact/linkedin.png" alt="Akash Raj on Linkedin"></a>
+            </figure>
+
+            <figure>
+               <a href="mailto:akashraj9828@gmail.com" target="_blank"><img
+                     src="https://akashraj.tech/images/Contact/email.png" alt="Contact Akash Raj on mail"></a>
+            </figure>
+
+            <figure>
+               <a href="https://www.facebook.com/profile.php?id=100003852667560" target="_blank"><img
+                     src="https://akashraj.tech/images/Contact/facebook.png" alt="Akash Raj on Facebook"></a>
+            </figure>
+            <figure>
+               <a href="https://www.instagram.com/akashraj.exe" target="_blank"><img
+                     src="https://akashraj.tech/images/Contact/instagram.png" alt="Akash Raj on Instagram"></a>
+            </figure>
+            <figure>
+               <a href="https://www.akashraj.tech" target="_blank"><img
+                     src="https://akashraj.tech/images/Contact/domain.png" alt="Akash Raj's Website"></a>
+            </figure>
+
+         </section>
       </div>
 
       <script src="./assets/js/jquery-minified.js"></script>

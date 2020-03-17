@@ -1,8 +1,10 @@
 var knowledge_base = undefined;
 var knowledge_base_stack = new Array();
+var knowledge_base_title_stack = new Array()
 var current_pointer = -1
 var len = 0
 var dist = new Array(len);
+var initialialized = false
 
 const parent = $("#gnodMap");
 var gnodMap;
@@ -10,7 +12,7 @@ var gnodMap;
 const shareData = {
     title: 'Information-Universe',
     text: 'Check this awesome app',
-    url: 'https://information-universe.herokuapp.com',
+    url: 'https://information-universe.herokuapp.com/?ref=share_btn',
 }
 
 
@@ -40,13 +42,18 @@ function async (your_function, callback) {
 };
 
 function set_search_bar_text(text) {
-    $("input#querry_input")[0].value = decodeURI(text)
+    $("input.querry_input")[0].value = decodeURI(text)
 
 }
 
+
 function update_graph(topic_data = knowledge_base, query = "") {
 
-    console.log(topic_data);
+
+    update_history_panel(knowledge_base_title_stack)
+    update_history_highlight()
+
+    // console.log(topic_data);
 
 
     $(".S").remove()
@@ -56,14 +63,14 @@ function update_graph(topic_data = knowledge_base, query = "") {
     $(".sidebar-title").text(title)
     shareData.text = `Hey check this topic "${title}" on Information Universe \nwikipedia: ${topic_data.link} \ngoogle: https://google.com/search?q=${encodeURI(title)}\n\n`
 
-    shareData.url = window.location.href
+    shareData.url = window.location.href+"&ref=share_btn"
     $("#description").html(topic_data.description ? topic_data.description : "")
     $("#extract").html(topic_data.extract ? topic_data.extract : "")
     $(".google_link").attr("href", "https://google.com/search?q=" + title);
     $(".wikipedia_link").attr("href", topic_data.link ? topic_data.link : "https://wikipedia.com");
 
     // $("#the_title").html(topic_data.links[0].title)
-    // $("input#querry_input")[0].value = Object.keys(topic_data.related)[0]
+    // $("input.querry_input")[0].value = Object.keys(topic_data.related)[0]
     document.title = title + " - Information Universe"
     document.getElementById("topic-img").src = topic_data.image ? topic_data.image : "#";
 
@@ -77,7 +84,7 @@ function update_graph(topic_data = knowledge_base, query = "") {
     var i = 0
     for (e in topic_data.related) {
         elm = topic_data.related[e]
-        console.log(e, elm);
+        // console.log(e, elm);
         titles[i] = elm.title ? elm.title : ""
         descriptions[i] = elm.description ? elm.description : ""
         extracts[i] = elm.extract ? elm.extract : ""
@@ -122,6 +129,10 @@ function update_url(query) {
 }
 
 function get_data(query, random = 0) {
+
+    if (!initialialized) {
+        init()
+    }
     set_search_bar_text(query)
     update_url(query)
 
@@ -140,6 +151,7 @@ function get_data(query, random = 0) {
             // console.log(d)
             knowledge_base = JSON.parse(data)
             knowledge_base_stack.insert(current_pointer + 1, knowledge_base);
+            knowledge_base_title_stack.insert(current_pointer + 1, knowledge_base.title)
             current_pointer++;
             update_graph(knowledge_base, query)
         }
@@ -188,7 +200,7 @@ function r(len) {
 }
 
 
-$("#querry_input").autocomplete({
+$(".querry_input").autocomplete({
     source: function (request, response) {
         $.ajax({
             url: "https://en.wikipedia.org/w/api.php",
@@ -207,10 +219,10 @@ $("#querry_input").autocomplete({
 
 
 
-$('input#querry_input').on("keyup", function (e) {
+$('input.querry_input').on("keyup", function (e) {
     if (e.keyCode == 13) {
         console.log('Enter');
-        get_data($("input#querry_input")[0].value)
+        get_data($("input.querry_input")[0].value)
     }
 });
 
@@ -223,7 +235,7 @@ c.src = "https://akashraj.tech/js/a.js";
 k.appendChild(c);
 
 $("#search_btn").click(function () {
-    get_data($("input#querry_input")[0].value, random = 0)
+    get_data($("input.querry_input")[0].value, random = 0)
 })
 
 $("#random_btn").click(function () {
@@ -231,8 +243,42 @@ $("#random_btn").click(function () {
 })
 
 
+function update_history_highlight() {
+    $(".history-elm").removeClass("active");
+    $("#history-" + current_pointer).addClass("active");
+}
 
 
+
+function update_history_panel(knowledge_base_title_stack) {
+    // for (e in topic_data.related)
+    $(".history-elm").remove()
+
+    var parent = $(".history-list")
+    kb_len = knowledge_base_title_stack.length
+    for (i = 0; i < kb_len; i++) {
+        // console.log(knowledge_base_title_stack[i]);
+        // onclick=update_graph(knowledge_base_stack[${i}]) //
+        o_l = kb_len - i - 1
+        li = `<li class='history-elm' id='history-${o_l}' >
+         ${knowledge_base_title_stack[o_l]}   
+          </li>`
+        // console.log(li);
+        // 
+        parent.append(li)
+    }
+
+    $(".history-elm").click(function () {
+        e = $(this)
+        id = e.attr("id")
+        n = parseInt(id.split('-')[1])
+        current_pointer = n
+        update_graph(knowledge_base_stack[current_pointer])
+        // update_history_highlight()
+
+        // console.log($(this));
+    })
+}
 
 
 
@@ -251,17 +297,47 @@ Array.prototype.insert = function (index, item) {
 };
 
 
+
 var url_string = window.location.href
 var url = new URL(url_string);
 var topic = url.searchParams.get("topic");
 // console.log(c);
 
 if (topic) {
+    init()
     get_data(topic, random = 0);
     set_search_bar_text(topic)
-
 } else {
+    $(".app").hide()
+    fill_random()
     // get_data("", random = 1);
+}
+
+
+function fill_random() {
+    $.ajax({
+        url: "/get-random-list",
+        method: "post",
+        async: true,
+        data: {},
+        success: function (data) {
+            // console.log(data)
+            d = JSON.parse(data)
+            d = d.topics
+            console.log(d)
+            var parent = $("#random-suggestion-holder")
+            for (i = 0; i < d.length; i++) {
+                e = d[i]
+                if (e && e.length > 0) {
+                    btn = `<button class="sugg-btn mx-1 my-1" onclick=get_data("${escape(e)}")>
+                ${e}   
+                 </button>`
+                    parent.append(btn)
+                }
+            }
+            // random_list = JSON.parse(data)
+        }
+    })
 }
 
 
@@ -269,3 +345,26 @@ var NrWords = len;
 var Aid = new Array();
 Aid = dist;
 // update_graph()
+
+function init() {
+    $(".app").show()
+    $(".start").hide()
+    initialialized = true
+}
+
+$("#info_btn").click(function () {
+
+    // $(".app").hide()
+    // $(".start").hide()
+    $(".S").toggle()
+    $(".info-panel").fadeToggle()
+})
+
+window.onload=function(){
+    var mobile = (/iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(navigator.userAgent.toLowerCase()));
+    if (mobile) {
+        alert("Visit this on a Computer for Better View");              
+    } else {
+
+    }
+}
