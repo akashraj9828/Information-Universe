@@ -174,7 +174,7 @@ button {
     outline: none !important;
 }
 
-#title-center {
+.title-center {
     min-width: 350px;
     max-width: 500px;
     margin: auto;
@@ -220,19 +220,13 @@ button {
     z-index: 2;
 }
 
-#search_template {
-    display: block;
-    right: 10px;
-    position: absolute;
-}
-
-#side-info, #my-info{
+.side-info, .my-info{
     max-height: 80vh;
     overflow: overlay;
     background: #fff7f7d6;
     border-radius: 5px;
 }
-#my-info{
+.my-info{
     max-height: none;
 }
 
@@ -241,7 +235,7 @@ button {
     display: none;
 }
 
-#topic-img ,#my-img {
+.topic-img ,.my-img {
     width: 100%;
     max-width: 225px;
     min-width: 150px;
@@ -496,7 +490,7 @@ animation: bg-animate 33s ease infinite;
     position: relative;
     top: -70px;
 }
-#random-suggestion-holder{
+.random-suggestion-holder{
 text-align: center;
 }
 .sugg-btn{

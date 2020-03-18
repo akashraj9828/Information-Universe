@@ -126,10 +126,19 @@ function get_random_topic() {
     return random_topic
 }
 
+function removeTags(str) {
+      if ((str===null) || (str===''))
+      return false;
+      else
+      str = str.toString();
+      return str.replace( /(<([^>]+)>)/ig, '');
+   }
 
 function query_wiki(title, callback) {
+    
     // convert undefined and null to string
-    title = "" + title
+    title =decodeURI( "" + title)
+    title=removeTags(title)
     // console.log("********************************************************************")
     console.log("Getting title: \t" + title)
     // console.log("********************************************************************")

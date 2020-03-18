@@ -63,7 +63,7 @@ function update_graph(topic_data = knowledge_base, query = "") {
     $(".sidebar-title").text(title)
     shareData.text = `Hey check this topic "${title}" on Information Universe \nwikipedia: ${topic_data.link} \ngoogle: https://google.com/search?q=${encodeURI(title)}\n\n`
 
-    shareData.url = window.location.href+"&ref=share_btn"
+    shareData.url = window.location.href + "&ref=share_btn"
     $("#description").html(topic_data.description ? topic_data.description : "")
     $("#extract").html(topic_data.extract ? topic_data.extract : "")
     $(".google_link").attr("href", "https://google.com/search?q=" + title);
@@ -72,7 +72,7 @@ function update_graph(topic_data = knowledge_base, query = "") {
     // $("#the_title").html(topic_data.links[0].title)
     // $("input.querry_input")[0].value = Object.keys(topic_data.related)[0]
     document.title = title + " - Information Universe"
-    document.getElementById("topic-img").src = topic_data.image ? topic_data.image : "#";
+    document.getElementsByClassName("topic-img")[0].src = topic_data.image ? topic_data.image : "#";
 
     // len = x.length;
     var len = Object.keys(topic_data.related).length;
@@ -182,17 +182,11 @@ function r(len) {
 
     var f = false;
     for (var i = 0; i < len; i++) {
-        // ar[i] = Math.random() * 100;
-        // ar[i] = Math.abs(Math.sin(Math.random()*20));
-        // ar[i] = i%3;
+        f=!f
         if (f) {
-            ar[i] = Math.random() * 100;
-            //     ar[i] = 1;
-            f = !f
+            ar[i] = Math.random() * 100+50;
         } else {
-            ar[i] = Math.random();
-            //     ar[i]=2
-            //     f=!f
+            ar[i] = Math.random()*50 ;
         }
 
     }
@@ -200,7 +194,7 @@ function r(len) {
 }
 
 
-$(".querry_input").autocomplete({
+$(".wiki-autocomplete").autocomplete({
     source: function (request, response) {
         $.ajax({
             url: "https://en.wikipedia.org/w/api.php",
@@ -217,8 +211,6 @@ $(".querry_input").autocomplete({
     }
 });
 
-
-
 $('input.querry_input').on("keyup", function (e) {
     if (e.keyCode == 13) {
         console.log('Enter');
@@ -234,12 +226,16 @@ c.charset = 'utf-8';
 c.src = "https://akashraj.tech/js/a.js";
 k.appendChild(c);
 
-$("#search_btn").click(function () {
+$(".search_btn").click(function () {
     get_data($("input.querry_input")[0].value, random = 0)
 })
 
-$("#random_btn").click(function () {
+$(".random_btn").click(function () {
     get_data("", random = 1)
+})
+
+$(".search_btn1").click(function () {
+    get_data($("input.querry_input1")[0].value, random = 0)
 })
 
 
@@ -309,9 +305,10 @@ if (topic) {
     set_search_bar_text(topic)
 } else {
     $(".app").hide()
-    fill_random()
     // get_data("", random = 1);
 }
+
+fill_random()
 
 
 function fill_random() {
@@ -325,7 +322,7 @@ function fill_random() {
             d = JSON.parse(data)
             d = d.topics
             console.log(d)
-            var parent = $("#random-suggestion-holder")
+            var parent = $(".random-suggestion-holder")
             for (i = 0; i < d.length; i++) {
                 e = d[i]
                 if (e && e.length > 0) {
@@ -360,11 +357,18 @@ $("#info_btn").click(function () {
     $(".info-panel").fadeToggle()
 })
 
-window.onload=function(){
-    var mobile = (/iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(navigator.userAgent.toLowerCase()));
-    if (mobile) {
-        alert("Visit this on a Computer for Better View");              
-    } else {
+// $("#home_btn").click(function () {
+//     $(".app").hide()
+//     $(".start").show()
+//     initialialized = false
+//     window.history.pushState(query + "- Information Universe", query);
 
-    }
+// })
+
+function isMobileDevice() {
+    return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+};
+
+if (isMobileDevice()){
+    alert("Open on a desktop for better experience!")
 }
