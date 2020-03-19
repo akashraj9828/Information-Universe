@@ -49,7 +49,6 @@ function set_search_bar_text(text) {
 
 function update_graph(topic_data = knowledge_base, query = "") {
 
-
     update_history_panel(knowledge_base_title_stack)
     update_history_highlight()
 
@@ -149,7 +148,8 @@ function get_data(query, random = 0) {
             // console.log(data)
             // d = JSON.parse(data)
             // console.log(d)
-            knowledge_base = JSON.parse(data)
+            // knowledge_base = JSON.parse(data)
+            knowledge_base=data
             knowledge_base_stack.insert(current_pointer + 1, knowledge_base);
             knowledge_base_title_stack.insert(current_pointer + 1, knowledge_base.title)
             current_pointer++;
@@ -280,11 +280,15 @@ function update_history_panel(knowledge_base_title_stack) {
 
 
 
-function test() {
-    setInterval(() => {
+function test(n=100) {
+    i=0
+    var repeater=setInterval(() => {
+        i++
+        if(i>n){
+            clearInterval(repeater)
+        }
         get_data("", random = 1);
-
-    }, 5000);
+    }, 100);
 
 }
 
@@ -313,14 +317,13 @@ fill_random()
 
 function fill_random() {
     $.ajax({
-        url: "/get-random-list",
+        url: "/get-random-list/20",
         method: "post",
         async: true,
         data: {},
         success: function (data) {
             // console.log(data)
-            d = JSON.parse(data)
-            d = d.topics
+            d = data.topics
             console.log(d)
             var parent = $(".random-suggestion-holder")
             for (i = 0; i < d.length; i++) {

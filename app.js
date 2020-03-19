@@ -18,9 +18,13 @@ console.log("webhook_url: ", webhook_url)
 
 
 
+var LRU = require("lru-cache")
+var cache = new LRU(1000)
+
+
+
 var not_random_list = ["Brooklyn Nine-Nine", "Last Man Standing(American TV series)", "Dads(2013 TV series)", "The Blacklist(TV series)", "Enlisted(TV series)", "Surviving Jack", "List of Brooklyn Nine-Nineepisodes", "Mulaney", "Superstore(TV series)", "New Girl(season 6)", "Pilot (Brooklyn Nine-Nine)", "Christmas (Brooklyn Nine-Nine)", "The Slump", "Pontiac Bandit", "Undercover (Brooklyn Nine-Nine)", "The Mole (Brooklyn Nine-Nine)", "Johnny and Dora", "The Oolong Slayer", "The Box (Brooklyn Nine-Nine)", "Jake & Amy", "Brooklyn Nine-Nine(season 6)", "Engineering", "Astronomy", "Biology", "Chemistry", "Cognitive Science", "Computer Science", "Ecology", "Geography", "Geology", "Linguistics", "Physics", "Psychology", "Sociology", "Political", "Zoology", "Volcanology", "Meteorology", "Paleontology", "Methodology", "Geometry", "matter", "motion", "spacetime", "Astrophysics", "Astrometry", "Optics", "Neurophysics", "laws of thermodynamics", "Computer", "Central processing unit", "Computer memory", "Processor design", "History of computing hardware", "Integrated circuit", "Logic gate", "Microprocessor", "Microcontroller", "Very Large Scale Integration", "Intel 4004", "Travelling salesman problem", "Minimum spanning tree", "Shortest path problem", "Dijkstra's algorithm", "Greedy algorithm", "A* search algorithm", "Bellman–Ford algorithm", "Engine", "Reciprocating engine", "Timeline of motor and engine technology", "Petrol engine", "Four-stroke engine", "Wood gas", "Stirling engine", "Brayton cycle", "Gas engine", "Hydrolock", "Automotive engine", "Diesel engine", "Reciprocating engine", "Miller cycle", "Two-stroke engine", "Stratified charge engine", "Four-stroke engine", "India", "Hindus", "West Bengal", "Kolkata", "Partition of India", "South India", "Islam in India", "Economic history of India", "Indian Councils Act 1909", "Independence Day (India)", "Partition of Bengal (1905)", "Akbar", "Humayun", "Jahangir", "Second Battle of Panipat", "Mughal emperors", "Bairam Khan", "Abdul Rahim Khan-I-Khana", "Maldev Rathore", "Bharmal", "Khusrau Mirza", "Hamida Banu Begum", "Daniyal Mirza", "Murad Mirza (son of Akbar)", "Ruqaiya Sultan Begum", "Salima Sultan Begum", "Taj Mahal", "Shah Jahan", "Agra", "Mumtaz Mahal", "Agra Fort", "Jama Masjid, Delhi", "Mughal architecture", "Tomb of I'timād-ud-Daulah", "Indo-Islamic architecture", "Bibi Ka Maqbara", "Tomb of Jahangir", "Tomb of Safdar Jang", "Akbar's tomb", "GitHub", "Nat Friedman", "Git", "Comparison of source-code-hosting facilities", "Open Hub", "Magento", "StyleCop", "Etherpad", "Bitbucket", "Andreessen Horowitz", "Twilio", "Meteor (web framework)", "Tom Preston-Werner", "Jekyll (software)", "GitLab", "Google", "General Electric", "Microsoft", "Larry Page", "Yahoo!", "Eric Schmidt", "Gmail", "Google Maps", "Baidu", "YouTube", "Goldman Sachs", "Investment banking", "Lehman Brothers", "Bear Stearns", "Collateralized debt obligation", "Henry Paulson", "Lloyd Blankfein", "Merrill Lynch & Co.", "IKB Deutsche Industriebank", "Asset-backed securities index", "Subprime crisis impact timeline", "Synthetic CDO", "Spider-Man", "Spider-Man", "The Amazing Spider-Man", "Steve Ditko", "Amazing Fantasy", "Tales to Astonish", "John Romita Sr.", "John Romita Jr.", "Goku", "Dragon Ball (manga)", "Gohan", "Frieza", "Vegeta", "Piccolo (Dragon Ball)", "Krillin", "Neko Majin", "Trunks (Dragon Ball)", "List of Dragon Ball characters", "Marvel", "DC Comics", "Marvel Comics", "Alpha (disambiguation)", "WildStorm", ]
 var random_list = []
-var mix_random = []
 var random_generated = false
 var random_count = 0
 if (!random_generated) {
@@ -48,106 +52,107 @@ app.use('/static', express.static('public'))
 
 
 var num_request = 0
-app.post('/get-data', function (req, res) {
+app.all('/get-data', handle_query)
+app.all('/get-random-list/:n', function (req, res) {
     num_request += 1
-    console.time("Response time for " + num_request)
+    n = req.params.n ? req.params.n : 15
+    warning = n > 500 ? true : false
+    n = warning ? 500 : n
+    console.log(req.params.n);
+
+    console.time("Response time for random_list " + num_request)
     console.log("********************************************************************")
-    // console.log(req.body)
-    var result
-    var topic = ""
-    random = 0
-
-    if (req.body.random) {
-        random = req.body.random
+    var result = {
     }
-    if (random == 0) {
-        topic = req.body.query
-    } else if (random == 1) {
-        topic = get_random_topic()
+    if(warning){
+        result.warning={limit:"Limit of 500 topics at a time"}
     }
-    query_wiki(topic, function (a) {
-        result = a
-        res.setHeader('Content-Type', 'application/json');
-        result = JSON.stringify(result)
-        res.json(result)
-        console.timeEnd("Response time for " + num_request)
-        build_msg(result)
-        console.log("********************************************************************")
-    })
-})
-app.get('/get-data', function (req, res) {
-    num_request += 1
-    console.time("Response time for " + num_request)
-    console.log("********************************************************************")
-    // console.log(req.body)
-    var result
-    var topic = ""
-    random = 0
 
-    if (req.query.random) {
-        random = req.query.random
-    }
-    if (random == 0) {
-        topic = req.query.query
-    } else if (random == 1) {
-        topic = get_random_topic()
-    }
-    query_wiki(topic, function (a) {
-        result = a
-        build_msg(result)
-        res.setHeader('Content-Type', 'application/json');
-        // result = JSON.stringify(result)
-        res.json(result)
-        console.timeEnd("Response time for " + num_request)
-        console.log("********************************************************************")
-    })
-})
-
-function get_data(topic, random = 0) {
-
-}
-
-function get_random_topic() {
-    random_topic = ''
-    if (coin) {
-        random_topic = not_random_list[Math.floor(Math.random() * not_random_list.length)]
-    } else {
-        random_topic = random_list[Math.floor(Math.random() * random_list.length)]
-    }
-    // random_topic = coin ? not_random_list[Math.floor(Math.random() * not_random_list.length)]: random_list[Math.floor(Math.random() * random_list.length)]
-    coin = !coin
-    random_count += 1
-    if (random_count > 30) {
-        random_topic = []
-        console.log("Updating random!")
-        make_random_list()
-        random_count = 0
-    }
-    return random_topic
-}
-
-function removeTags(str) {
-      if ((str===null) || (str===''))
-      return false;
-      else
-      str = str.toString();
-      return str.replace( /(<([^>]+)>)/ig, '');
-   }
-
-function query_wiki(title, callback) {
+    result.topics=[]
     
+    for (i = 0; i < n; i++) {
+        result['topics'].push(get_random_topic())
+    }
+    res.setHeader('Content-Type', 'application/json');
+    res.json(result)
+    console.timeEnd("Response time for random_list " + num_request)
+    console.log("********************************************************************")
+})
+
+function handle_query(req, res) {
+    num_request += 1
+    console.time("Response time for " + num_request)
+    console.log("********************************************************************")
+    // console.log(req.body)
+    var result
+    var topic = ""
+    random = 0
+    if (req.method == "POST") {
+        if (req.body.random) {
+            random = req.body.random
+        }
+        if (random == 0) {
+            topic = req.body.query
+        } else if (random == 1) {
+            topic = get_random_topic()
+        }
+    }
+    if (req.method == "GET") {
+        if (req.query.random) {
+            random = req.query.random
+        }
+        if (random == 0) {
+            topic = req.query.query
+        } else if (random == 1) {
+            topic = get_random_topic()
+        }
+    }
+
+    query_wiki(topic, function (result, t) {
+
+        build_msg(result)
+        res.setHeader('Content-Type', 'application/json');
+        res.json(result)
+
+        if (t) {
+            console.log("Cache verification: Sent [", topic, "]  got [", t, "]")
+            console.log("Inserted into Cache: ", t);
+            cache.set(t, result)
+        }
+
+        console.timeEnd("Response time for " + num_request)
+        console.log("********************************************************************")
+    })
+}
+
+
+
+function query_wiki(query, callback) {
     // convert undefined and null to string
-    title =decodeURI( "" + title)
-    title=removeTags(title)
+    let title = decodeURI("" + query)
+    title = removeTags(title) + ""
+    title = title.toLowerCase()
+    const query_title = title
+    console.log("Getting title: \t" + query_title)
+
+    // cache_hit=false
+    if (cache.has(query_title)) {
+        console.log("Cache hit for:", query_title);
+        callback(cache.get(query_title))
+        return
+        // return cached
+    }
+
+
+
     // console.log("********************************************************************")
-    console.log("Getting title: \t" + title)
     // console.log("********************************************************************")
 
-    var res = {}
-    var related = {}
+    let res = {}
+    let related = {}
 
-    var req1 = false
-    var req2 = false
+    let req1 = false
+    let req2 = false
     // get summmary
     // console.log("---: functionquery_wiki -> get summmary");
     wiki.fetch({
@@ -167,7 +172,10 @@ function query_wiki(title, callback) {
         req1 = true
         if (req1 && req2) {
             // console.log("---: functionquery_wiki -> returned data 1");
-            callback(res)
+
+            callback(res, query_title)
+            return
+
         }
     });
     // console.log("---: functionquery_wiki -> get related;", );
@@ -189,7 +197,10 @@ function query_wiki(title, callback) {
         req2 = true
         if (req1 && req2) {
             // console.log("---: functionquery_wiki -> returned data 2");
-            callback(res)
+
+            callback(res, query_title)
+            return
+
 
         }
     });
@@ -199,7 +210,6 @@ function query_wiki(title, callback) {
 function pack(data, count) {
     temp_obj = {}
     elm = data
-
     temp_obj.title = check_key(elm, "displaytitle") ? elm.displaytitle : undefined
     temp_obj.description = check_key(elm, "description") ? elm.description : undefined
     temp_obj.extract = check_key(elm, "extract") ? elm.extract : undefined
@@ -210,18 +220,25 @@ function pack(data, count) {
     return temp_obj
 }
 
-function check_key(data, key) {
-    if (data.hasOwnProperty(key)) {
-        return true
-    } else {
-        return false
-    }
-}
 
-function between(min, max) {
-    return Math.floor(
-        Math.random() * (max - min) + min
-    )
+
+
+function get_random_topic() {
+    random_topic = ''
+    if (coin) {
+        random_topic = not_random_list[Math.floor(Math.random() * not_random_list.length)]
+    } else {
+        random_topic = random_list[Math.floor(Math.random() * random_list.length)]
+        random_count += 1
+    }
+    // random_topic = coin ? not_random_list[Math.floor(Math.random() * not_random_list.length)]: random_list[Math.floor(Math.random() * random_list.length)]
+    coin = !coin
+    if (random_count > 1000) {
+        console.log("Updating random!")
+        make_random_list()
+        random_count = 0
+    }
+    return random_topic
 }
 
 function make_random_list() {
@@ -247,6 +264,31 @@ function make_random_list() {
     })
 }
 
+// helper functions
+
+function between(min, max) {
+    return Math.floor(
+        Math.random() * (max - min) + min
+    )
+}
+
+function check_key(data, key) {
+    if (data.hasOwnProperty(key)) {
+        return true
+    } else {
+        return false
+    }
+}
+
+function removeTags(str) {
+    if ((str === null) || (str === ''))
+        return false;
+    else
+        str = str.toString();
+    return str.replace(/(<([^>]+)>)/ig, '');
+}
+
+// helper functions
 
 
 var msg = {
@@ -361,19 +403,3 @@ function send_msg(msg) {
         msg_in_progress = false
     })
 }
-
-app.post('/get-random-list', function (req, res) {
-    num_request += 1
-    console.time("Response time for random_list " + num_request)
-    console.log("********************************************************************")
-    var result
-    result = {topics:[]}
-    for (i=0;i<15;i++){
-        result['topics'].push(get_random_topic())
-    }
-    res.setHeader('Content-Type', 'application/json');
-    result = JSON.stringify(result)
-    res.json(result)
-    console.timeEnd("Response time for random_list " + num_request)
-    console.log("********************************************************************")
-})
