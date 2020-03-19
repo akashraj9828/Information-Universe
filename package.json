@@ -11,6 +11,7 @@
     "pm2": "^4.2.3",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
+    "string-strip-html": "^4.3.17",
     "wiki-page": "^1.0.0"
   },
   "devDependencies": {},

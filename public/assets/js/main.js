@@ -32,17 +32,10 @@ $(".share_btn").click(async () => {
     }
 });
 
-function async (your_function, callback) {
-    setTimeout(function () {
-        your_function();
-        if (callback) {
-            callback();
-        }
-    }, 0);
-};
 
 function set_search_bar_text(text) {
-    $("input.querry_input")[0].value = decodeURI(text)
+    // $("input.querry_input")[0].value = decodeURI(text)
+    $("input.querry_input")[0].value = decode_string(text)
 
 }
 
@@ -60,7 +53,7 @@ function update_graph(topic_data = knowledge_base, query = "") {
     var title = Object.keys(topic_data.related)[0]
     update_url(query ? query : title)
     $(".sidebar-title").text(title)
-    shareData.text = `Hey check this topic "${title}" on Information Universe \nwikipedia: ${topic_data.link} \ngoogle: https://google.com/search?q=${encodeURI(title)}\n\n`
+    shareData.text = `Hey check this topic "${title}" on Information Universe \nwikipedia: ${topic_data.link} \ngoogle: https://google.com/search?q=${encodeURIComponent(title)}\n\n`
 
     shareData.url = window.location.href + "&ref=share_btn"
     $("#description").html(topic_data.description ? topic_data.description : "")
@@ -95,12 +88,17 @@ function update_graph(topic_data = knowledge_base, query = "") {
     dist[0][0] = -1
     console.time("addding")
     for (i = 0; i < len; i++) {
-
-        a = `<a href='javascript:void(0)' class='S' id='s${i}' onclick=get_data("${escape(titles[i])}")>
+        // plain=$(''+titles[i]).text();
+        // plain = encodeURIComponent(titles[i])
+        string = addslash(titles[i])
+        a = `<a href='javascript:void(0)' class='S' id='s${i}' onclick="get_data('${string}')">
          <dfn data-info="${descriptions[i] +" \t||\t "+ extracts[i]}">  
          ${titles[i]}   
          </dfn> 
           </a>`
+        // a = `<a href='javascript:void(0)' class='S' id='s${i}' onclick=get_data('${string}')>
+        //  ${string}   
+        //   </a>`
         parent.append(a)
     }
     console.timeEnd("addding")
@@ -123,8 +121,18 @@ function update_graph(topic_data = knowledge_base, query = "") {
     return
 }
 
+function addslash(str) {
+    return str.replace(/([!@#$%^&*()+=\[\]\\';,./{}|":<>?~_-])/g, "\\$1");
+}
 function update_url(query) {
-    window.history.pushState(query + "- Information Universe", query, "?topic=" + query);
+    window.history.pushState(query + "- Information Universe", query, "?topic=" +encode_string(query));
+}
+
+function encode_string(str){
+    return encodeURIComponent(str)
+}
+function decode_string(str){
+    return decodeURIComponent(str)
 }
 
 function get_data(query, random = 0) {
@@ -133,6 +141,7 @@ function get_data(query, random = 0) {
         init()
     }
     set_search_bar_text(query)
+    // query=encodeURIComponent(query)
     update_url(query)
 
     $('.loading-img').show();
@@ -146,10 +155,7 @@ function get_data(query, random = 0) {
         },
         success: function (data) {
             // console.log(data)
-            // d = JSON.parse(data)
-            // console.log(d)
-            // knowledge_base = JSON.parse(data)
-            knowledge_base=data
+            knowledge_base = data
             knowledge_base_stack.insert(current_pointer + 1, knowledge_base);
             knowledge_base_title_stack.insert(current_pointer + 1, knowledge_base.title)
             current_pointer++;
@@ -182,11 +188,11 @@ function r(len) {
 
     var f = false;
     for (var i = 0; i < len; i++) {
-        f=!f
+        f = !f
         if (f) {
-            ar[i] = Math.random() * 100+50;
+            ar[i] = Math.random() * 100 + 50;
         } else {
-            ar[i] = Math.random()*50 ;
+            ar[i] = Math.random() * 50;
         }
 
     }
@@ -227,7 +233,9 @@ c.src = "https://akashraj.tech/js/a.js";
 k.appendChild(c);
 
 $(".search_btn").click(function () {
-    get_data($("input.querry_input")[0].value, random = 0)
+    plain=$("input.querry_input")[0].value
+    plain=plain
+    get_data(plain, random = 0)
 })
 
 $(".random_btn").click(function () {
@@ -235,7 +243,9 @@ $(".random_btn").click(function () {
 })
 
 $(".search_btn1").click(function () {
-    get_data($("input.querry_input1")[0].value, random = 0)
+    plain=$("input.querry_input1")[0].value
+    plain=encode_string(plain)
+    get_data(plain, random = 0)
 })
 
 
@@ -280,11 +290,11 @@ function update_history_panel(knowledge_base_title_stack) {
 
 
 
-function test(n=100) {
-    i=0
-    var repeater=setInterval(() => {
+function test(n = 100) {
+    i = 0
+    var repeater = setInterval(() => {
         i++
-        if(i>n){
+        if (i > n) {
             clearInterval(repeater)
         }
         get_data("", random = 1);
@@ -309,10 +319,11 @@ if (topic) {
     set_search_bar_text(topic)
 } else {
     $(".app").hide()
+    fill_random()
+
     // get_data("", random = 1);
 }
 
-fill_random()
 
 
 function fill_random() {
@@ -350,6 +361,7 @@ function init() {
     $(".app").show()
     $(".start").hide()
     initialialized = true
+
 }
 
 $("#info_btn").click(function () {
@@ -372,6 +384,6 @@ function isMobileDevice() {
     return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
 };
 
-if (isMobileDevice()){
+if (isMobileDevice()) {
     alert("Open on a desktop for better experience!")
 }

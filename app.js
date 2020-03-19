@@ -10,6 +10,7 @@ const request = require('request')
 var dateFormat = require('dateformat');
 process.env.TZ = 'Asia/Kolkata'
 const default_img = "https://i.ibb.co/7jZZX53/no-img.png"
+const stripHtml = require("string-strip-html");
 
 // create a WEBHOOK_URL enviorment variable.
 // plug the url there
@@ -62,14 +63,15 @@ app.all('/get-random-list/:n', function (req, res) {
 
     console.time("Response time for random_list " + num_request)
     console.log("********************************************************************")
-    var result = {
-    }
-    if(warning){
-        result.warning={limit:"Limit of 500 topics at a time"}
+    var result = {}
+    if (warning) {
+        result.warning = {
+            limit: "Limit of 500 topics at a time"
+        }
     }
 
-    result.topics=[]
-    
+    result.topics = []
+
     for (i = 0; i < n; i++) {
         result['topics'].push(get_random_topic())
     }
@@ -114,10 +116,10 @@ function handle_query(req, res) {
         res.setHeader('Content-Type', 'application/json');
         res.json(result)
 
-        if (t) {
+        if (t && result.title != "Not found.") {
             console.log("Cache verification: Sent [", topic, "]  got [", t, "]")
-            console.log("Inserted into Cache: ", t);
-            cache.set(t, result)
+            console.log("Inserted into Cache: ", t.toLowerCase());
+            cache.set(t.toLowerCase(), result)
         }
 
         console.timeEnd("Response time for " + num_request)
@@ -129,43 +131,54 @@ function handle_query(req, res) {
 
 function query_wiki(query, callback) {
     // convert undefined and null to string
-    let title = decodeURI("" + query)
-    title = removeTags(title) + ""
-    title = title.toLowerCase()
+    // let title = decodeURIComponent("" + query)
+    console.log(query)
+    title = decodeURIComponent(query)
+    title = stripHtml(title) + ''
+
     const query_title = title
     console.log("Getting title: \t" + query_title)
 
     // cache_hit=false
-    if (cache.has(query_title)) {
-        console.log("Cache hit for:", query_title);
-        callback(cache.get(query_title))
+    if (cache.has(query_title.toLowerCase())) {
+        console.log("Cache hit for:", query_title.toLowerCase());
+        callback(cache.get(query_title.toLowerCase()))
         return
         // return cached
     }
-
-
-
-    // console.log("********************************************************************")
-    // console.log("********************************************************************")
-
     let res = {}
     let related = {}
 
     let req1 = false
     let req2 = false
     // get summmary
-    // console.log("---: functionquery_wiki -> get summmary");
-    wiki.fetch({
+
+    let cleaned=encodeURIComponent(decodeURIComponent(query_title))
+    let search_param1 = {
         section: 'page',
         type: 'summary',
-        title: title,
-    }, (data) => {
+        title: encodeURIComponent( query_title),
+    }
+    let search_param2 = {
+        section: 'page',
+        type: 'related', //links
+        title: encodeURIComponent( query_title),
+    }
+
+    // console.log(search_param1)
+    // console.log(search_param2);
+    
+
+    console.log("Searching forrrr", query_title);
+    wiki.fetch(search_param1, (data) => {
+
+        // console.log(data);
         res.title = data.title
         res.description = data.description
         res.extract = data.extract
         res.link = check_key(data, "content_urls") ? data.content_urls.desktop.page : "https://wikipedia.com"
         res.image = check_key(data, "thumbnail") ? data.thumbnail.source : default_img
-        related[data.displaytitle] = pack(data, -1)
+        related[data.title] = pack(data, -1)
 
         // get related pages
         // console.log("---: functionquery_wiki -> finished summmary");
@@ -180,11 +193,7 @@ function query_wiki(query, callback) {
     });
     // console.log("---: functionquery_wiki -> get related;", );
 
-    wiki.fetch({
-        section: 'page',
-        type: 'related', //links
-        title: title,
-    }, (data) => {
+    wiki.fetch(search_param2, (data) => {
         for (i in data.pages) {
             elm = data.pages[i]
             temp_obj = pack(elm, i)
@@ -210,12 +219,13 @@ function query_wiki(query, callback) {
 function pack(data, count) {
     temp_obj = {}
     elm = data
-    temp_obj.title = check_key(elm, "displaytitle") ? elm.displaytitle : undefined
+    temp_obj.title = check_key(elm, "title") ? elm.title.replace(/_/g, ' ') : undefined
     temp_obj.description = check_key(elm, "description") ? elm.description : undefined
     temp_obj.extract = check_key(elm, "extract") ? elm.extract : undefined
     temp_obj.link = check_key(elm, "content_urls") ? elm.content_urls.desktop.page : "https://wikipedia.com"
     temp_obj.image = check_key(elm, "thumbnail") ? elm.thumbnail.source : default_img
     temp_obj.count = count
+
 
     return temp_obj
 }
